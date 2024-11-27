@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>贝克焦虑自评量表（BAI）</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+  }
+  .question {
+    margin-bottom: 10px;
+  }
+  .submit-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+<h1>贝克焦虑自评量表（BAI）</h1>
+<form id="bdiform">
+     <p> <label><strong>请根据您在过去1周的情况选择以下选项：</strong></label></p>
+
+  <div class="question">
+<label><strong>第1题.麻木或刺痛</strong></label></p>
+   <p><input type="radio" name="q1" value="0" id="q1-0"><label for="q1-0">从未这样</label></p>
+   <p><input type="radio" name="q1" value="1" id="q1-1"><label for="q1-1">偶尔这样</label></p>
+    <p><input type="radio" name="q1" value="2" id="q1-2"><label for="q1-2">有时这样</label></p>
+   <p><input type="radio" name="q1" value="3" id="q1-3"><label for="q1-3">经常这样</label></p>
+  </div>
+  <div class="question">
+<label><strong>第2题.感到发热</strong></label></p>
+   <p><input type="radio" name="q2" value="0" id="q2-0"><label  for="q2-0">从未这样</label></p>
+   <p><input type="radio" name="q2" value="1" id="q2-1"><label  for="q2-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q2" value="2" id="q2-2"><label  for="q2-2">有时这样
+</label></p>
+   <p><input type="radio" name="q2" value="3" id="q1-3"><label  for="q2-3">经常这样
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第3题.腿部颤抖</strong></label></p>
+   <p><input type="radio" name="q3" value="0" id="q3-0"><label for="q3-0">从未这样
+</label></p>
+   <p><input type="radio" name="q3" value="1" id="q3-1"><label for="q3-1">偶尔这样
+
+</label></p>
+    <p><input type="radio" name="q3" value="2" id="q3-2"><label for="q3-2">有时这样
+</label></p>
+   <p><input type="radio" name="q3" value="3" id="q3-3"><label for="q3-3">经常这样
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第4题.不能放松</strong></label></p>
+   <p><input type="radio" name="q4" value="0"id="q4-0"><label for="q4-0">从未这样
+
+</label></p>
+   <p><input type="radio" name="q4" value="1"id="q4-1"><label for="q4-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q4" value="2"id="q4-2"><label for="q4-2">有时这样
+
+</label></p>
+   <p><input type="radio" name="q4" value="3"id="q4-3"><label for="q4-3">经常这样
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第5题.害怕发生不好的事情</strong></label></p>
+   <p><input type="radio" name="q5" value="0"id="q5-0"><label for="q5-0">从未这样
+
+</label></p>
+   <p><input type="radio" name="q5" value="1"id="q5-1"><label for="q5-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q5" value="2"id="q5-2"><label for="q5-2">有时这样
+
+</label></p>
+   <p><input type="radio" name="q5" value="3"id="q5-3"><label for="q5-3">经常这样
+
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第6题.头晕</strong></label></p>
+   <p><input type="radio" name="q6" value="0" id="q6-0"><label for="q6-0">从未这样
+</label></p>
+   <p><input type="radio" name="q6" value="1" id="q6-1"><label for="q6-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q6" value="2" id="q6-2"><label for="q6-2">有时这样
+
+</label></p>
+   <p><input type="radio" name="q6" value="3" id="q6-3"><label for="q6-3">经常这样
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第7题.心悸或心率加快</strong></label></p>
+   <p><input type="radio" name="q7" value="0" id="q7-0"><label for="q7-0">从未这样
+</label></p>
+   <p><input type="radio" name="q7" value="1" id="q7-1"><label for="q7-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q7" value="2" id="q7-2"><label for="q7-2">有时这样
+</label></p>
+   <p><input type="radio" name="q7" value="3" id="q7-3"><label for="q7-3">经常这样
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第8题.心神不定</strong></label></p>
+   <p><input type="radio" name="q8" value="0" id="q8-0"><label for="q8-0">从未这样
+</label></p>
+   <p><input type="radio" name="q8" value="1" id="q8-1"><label for="q8-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q8" value="2" id="q8-2"><label for="q8-2">有时这样
+</label></p>
+   <p><input type="radio" name="q8" value="3" id="q8-3"><label for="q8-3">经常这样
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第9题.惊吓</strong></label></p>
+   <p><input type="radio" name="q9" value="0" id="q9-0"><label for="q9-0">从未这样
+</label></p>
+   <p><input type="radio" name="q9" value="1" id="q9-1"><label for="q9-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q9" value="2" id="q9-2"><label for="q9-2">有时这样
+</label></p>
+   <p><input type="radio" name="q9" value="3" id="q8-2"><label for="q9-3">经常这样
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第10题.紧张</strong></label></p>
+   <p><input type="radio" name="q10" value="0"  id="q10-0"><label for="q10-0">从未这样
+
+</label></p>
+   <p><input type="radio" name="q10" value="1"  id="q10-1"><label for="q10-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q10" value="2"  id="q10-2"><label for="q10-2">有时这样
+</label></p>
+   <p><input type="radio" name="q10" value="3"  id="q10-3"><label for="q10-3">经常这样
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第11题.窒息感</strong></label></p>
+   <p><input type="radio" name="q11" value="0" id="q11-0"><label for="q11-0">从未这样
+</label></p>
+   <p><input type="radio" name="q11" value="1" id="q11-1"><label for="q11-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q11" value="2" id="q11-2"><label for="q11-2">有时这样
+</label></p>
+   <p><input type="radio" name="q11" value="3" id="q11-3"><label for="q11-3">经常这样
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第12题.手发抖</strong></label></p>
+   <p><input type="radio" name="q12" value="0" id="q12-0"><label for="q12-0">从未这样
+</label></p>
+   <p><input type="radio" name="q12" value="1" id="q12-1"><label for="q12-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q12" value="2" id="q12-2"><label for="q12-2">有时这样
+</label></p>
+   <p><input type="radio" name="q12" value="3" id="q12-3"><label for="q12-3">经常这样
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第13题.摇晃</strong></label></p>
+   <p><input type="radio" name="q13" value="0" id="q13-0"><label for="q13-0">从未这样
+</label></p>
+   <p><input type="radio" name="q13" value="1" id="q13-1"><label for="q13-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q13" value="2" id="q13-2"><label for="q13-2">有时这样
+</label></p>
+   <p><input type="radio" name="q13" value="3" id="q13-3"><label for="q13-3">经常这样
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第14题.害怕失控</strong></label></p>
+   <p><input type="radio" name="q14" value="0" id="q14-0"><label for="q14-0">从未这样
+</label></p>
+   <p><input type="radio" name="q14" value="1" id="q14-1"><label for="q14-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q14" value="2" id="q14-2"><label for="q14-2">有时这样
+</label></p>
+   <p><input type="radio" name="q14" value="3" id="q13-3"><label for="q14-3">经常这样
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第15题.呼吸困难</strong></label></p>
+   <p><input type="radio" name="q15" value="0"  id="q15-0"><label for="q15-0">从未这样
+</label></p>
+   <p><input type="radio" name="q15" value="1"  id="q15-1"><label for="q15-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q15" value="2"  id="q15-2"><label for="q15-2">有时这样
+
+</label></p>
+   <p><input type="radio" name="q15" value="3"  id="q15-3"><label for="q15-3">经常这样
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第16题.害怕快要死去</strong></label></p>
+   <p><input type="radio" name="q16" value="0" id="q16-0"><label for="q16-0">从未这样
+</label></p>
+   <p><input type="radio" name="q16" value="1" id="q16-1"><label for="q16-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q16" value="2" id="q16-2"><label for="q16-2">有时这样
+
+</label></p>
+   <p><input type="radio" name="q16" value="3" id="q16-3"><label for="q16-3">经常这样
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第17题.恐慌</strong></label></p>
+   <p><input type="radio" name="q17" value="0"  id="q17-0"><label for="q17-0">从未这样
+</label></p>
+   <p><input type="radio" name="q17" value="1"  id="q17-1"><label for="q17-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q17" value="2"  id="q17-2"><label for="q17-2">有时这样
+
+</label></p>
+   <p><input type="radio" name="q17" value="3"  id="q17-3"><label for="q17-3">经常这样
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第18题.消化不良或腹部不适</strong></label></p>
+   <p><input type="radio" name="q18" value="0" id="q18-0"><label for="q18-0">从未这样</label></p>
+   <p><input type="radio" name="q18" value="1" id="q18-1"><label for="q18-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q18" value="2" id="q18-2"><label for="q18-2">有时这样
+
+</label></p>
+   <p><input type="radio" name="q18" value="3" id="q18-3"><label for="q18-3">经常这样
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第19题.昏厥</strong></label></p>
+   <p><input type="radio" name="q19" value="0" id="q19-0"><label for="q19-0">从未这样
+</label></p>
+   <p><input type="radio" name="q19" value="1" id="q19-1"><label for="q19-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q19" value="2" id="q19-2"><label for="q19-2">有时这样
+
+</label></p>
+   <p><input type="radio" name="q19" value="3" id="q19-3"><label for="q19-3">经常这样
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第20题.脸发红</strong></label></p>
+   <p><input type="radio" name="q20" value="0" id="q20-0"><label for="q20-0">从未这样</label></p>
+   <p><input type="radio" name="q20" value="1" id="q20-1"><label for="q20-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q20" value="2" id="q20-2"><label for="q20-2">有时这样
+
+</label></p>
+   <p><input type="radio" name="q20" value="3" id="q20-3"><label for="q20-3">经常这样
+</label></p>
+  </div>
+  <div class="question">
+<label><strong>第21题.出汗（不是因为暑热）</strong></label></p>
+   <p><input type="radio" name="q21" value="0" id="q21-0"><label for="q21-0">从未这样
+</label></p>
+   <p><input type="radio" name="q21" value="1" id="q21-1"><label for="q21-1">偶尔这样
+</label></p>
+    <p><input type="radio" name="q21" value="2" id="q21-2"><label for="q21-2">有时这样
+
+</label></p>
+   <p><input type="radio" name="q21" value="3" id="q21-3"><label for="q21-3">经常这样
+</label></p>
+  </div>
+
+  <!-- ... 其他题目 ... -->
+</form>
+<button class="submit-btn" onclick="calculateScore()"><h3>提交并计算分数</h3></button>
+<div id="result"></div>
+
+<div id="scoringCriteria">
+    <h2>评分标准</h2>
+    <p>贝克焦虑量表（Beck Anxiety Inventory，BAI）是一种用于评估焦虑水平的常用量表。它通常根据被评估者的得分来判断焦虑症状的严重程度，评分标准一般如下：</p>
+    <ul>
+       <li>0-7分：无焦虑</li>
+        <li>8-15分：轻度焦虑</li>
+        <li>16-25分：中度焦虑</li>
+        <li>26-63分：重度焦虑</li>
+            </ul>
+ <p>每个分数范围都对应着不同程度的抑郁症状严重程度，评估者可以根据被评估者的得分来确定其抑郁症状的严重程度</p>
+</div>
+
+<script>
+function calculateScore() {
+  var form = document.getElementById('bdiform');
+  var score = 0;
+  var incomplete = false;
+  var questions = form.elements.length / 4; // 每个问题有4个选项
+
+  for (var i = 1; i <= questions; i++) {
+    var questionGroup = form.elements.namedItem('q' + i);
+    var isChecked = false;
+    for (var j = 0; j < questionGroup.length; j++) {
+      if (questionGroup[j].checked) {
+        isChecked = true;
+        score += parseInt(questionGroup[j].value);
+        break;
+      }
+    }
+    if (!isChecked) {
+      incomplete = true;
+      break;
+    }
+  }
+
+  if (incomplete) {
+    alert('有未完成的题目，请完成所有题目后再提交。');
+  } else {
+    document.getElementById('result').innerHTML ='您的得分是：' + score;
+  }
+}</script>
+<div style="flex-grow: 1;"></div><footer style="text-align: center; padding: 20px; background-color: #f0f0f0;">© 2024 壹适心理 鲁ICP备2023010371号-1</footer></div>
+
+</body>
+</html>

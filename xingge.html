@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>大五人格测试</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question {
+            margin-bottom: 10px;
+        }
+    
+@media screen and (max-width: 600px) {
+    /* 在这里添加针对小屏幕设备的CSS样式 */
+    body {
+        margin: 10px; /* 减少边距以适应小屏幕 */
+    }
+    .question {
+        font-size: 14px; /* 减小字体大小以适应小屏幕 */
+    }
+}
+</style>
+</head>
+<div style="display: flex; flex-direction: column; min-height: 100vh;"><body>
+    <h1>大五人格测试</h1>
+    <form id="personalityTestForm">
+         <div class="question">
+            <label for="q1">1. 你通常更喜欢独自度过一个晚上，而不是参加社交活动。</label>
+            <select id="q1" name="q1">
+                <option value="1">强烈不同意</option>
+                <option value="2">稍微不同意</option>
+                <option value="3">既不同意也不反对</option>
+                <option value="4">稍微同意</option>
+                <option value="5">强烈同意</option>
+            </select>
+        </div>
+       <div class="question">
+            <label for="q2">2. 你通常对别人的感受非常关心。</label>
+            <select id="q2" name="q2">
+                <option value="1">强烈不同意</option>
+                <option value="2">稍微不同意</option>
+                <option value="3">既不同意也不反对</option>
+                <option value="4">稍微同意</option>
+                <option value="5">强烈同意</option>
+            </select>
+        </div>
+ <div class="question">
+            <label for="q3">3. 你经常制定计划并坚持执行。</label>
+            <select id="q3" name="q3">
+                <option value="1">强烈不同意</option>
+                <option value="2">稍微不同意</option>
+                <option value="3">既不同意也不反对</option>
+                <option value="4">稍微同意</option>
+                <option value="5">强烈同意</option>
+            </select>
+        </div>
+ <div class="question">
+            <label for="q4">4. 你在面对压力时通常能保持冷静。</label>
+            <select id="q4" name="q4">
+                <option value="1">强烈不同意</option>
+                <option value="2">稍微不同意</option>
+                <option value="3">既不同意也不反对</option>
+                <option value="4">稍微同意</option>
+                <option value="5">强烈同意</option>
+            </select>
+        </div>
+ <div class="question">
+            <label for="q5">5. 你对新事物和新体验充满好奇心。</label>
+            <select id="q5" name="q5">
+                <option value="1">强烈不同意</option>
+                <option value="2">稍微不同意</option>
+                <option value="3">既不同意也不反对</option>
+                <option value="4">稍微同意</option>
+                <option value="5">强烈同意</option>
+            </select>
+        </div>
+ <div class="question">
+            <label for="q6">6. 你喜欢在大型社交场合中与人交流。</label>
+            <select id="q6" name="q6">
+                <option value="1">强烈不同意</option>
+                <option value="2">稍微不同意</option>
+                <option value="3">既不同意也不反对</option>
+                <option value="4">稍微同意</option>
+                <option value="5">强烈同意</option>
+            </select>
+        </div>
+ <div class="question">
+            <label for="q7">7. 你倾向于直接表达批评，而不是为了避免伤害他人而保持沉默。</label>
+            <select id="q7" name="q7">
+                <option value="1">强烈不同意</option>
+                <option value="2">稍微不同意</option>
+                <option value="3">既不同意也不反对</option>
+                <option value="4">稍微同意</option>
+                <option value="5">强烈同意</option>
+            </select>
+        </div>
+ <div class="question">
+            <label for="q8">8. 你经常拖延，有时难以按时完成任务。</label>
+            <select id="q8" name="q8">
+                <option value="1">强烈不同意</option>
+                <option value="2">稍微不同意</option>
+                <option value="3">既不同意也不反对</option>
+                <option value="4">稍微同意</option>
+                <option value="5">强烈同意</option>
+            </select>
+        </div>
+<div class="question">
+            <label for="q9">9. 你经常感到焦虑和紧张。</label>
+            <select id="q9" name="q9">
+                <option value="1">强烈不同意</option>
+                <option value="2">稍微不同意</option>
+                <option value="3">既不同意也不反对</option>
+                <option value="4">稍微同意</option>
+                <option value="5">强烈同意</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <label for="q10">10. 你更倾向于传统和熟悉的做事方式，而不是尝试新的方法。</label>
+            <select id="q10" name="q10">
+                <option value="1">强烈不同意</option>
+                <option value="2">稍微不同意</option>
+                <option value="3">既不同意也不反对</option>
+                <option value="4">稍微同意</option>
+                <option value="5">强烈同意</option>
+            </select>
+        </div>
+        <button type="button" onclick="calculateResults()"><h2>提交答案</h2></button>
+    </form>
+    <div id="results" style="display:none;">
+        <h2>测试结果</h2>
+        <p>外向性：<span id="extroversionScore"></span></p>
+        <p>宜人性：<span id="agreeablenessScore"></span></p>
+        <p>责任心：<span id="conscientiousnessScore"></span></p>
+        <p>情绪稳定性：<span id="neuroticismScore"></span></p>
+        <p>开放性：<span id="opennessScore"></span></p>
+    </div>
+
+<div id="scoringCriteria">
+    <h2>评分标准</h2>
+    <p>每个问题的得分范围是1到10。根据您的得分，以下是各个特质的判断标准：</p>
+    <ul>
+    <h3>1.外向性</h3>
+        <li>高外向性：得分接近10，表示个体喜欢社交活动，善于交流，充满活力。</li>
+<li>低外向性：得分接近1，表示个体偏好独处，较为内向，不太活跃。</li>
+<h3>2.宜人性</h3>
+        <li>高宜人性：得分接近10，表示个体善解人意，合作，乐于助人，富有同情心。</li>
+<li>低宜人性：得分接近1，表示个体可能自我中心，不容易相信他人的诚意和善意，竞争性强，不太关心他人感受。</li>
+<h3>3.责任心</h3>
+        <li>高责任心：得分接近10，表示个体有组织，可靠，勤奋，注重细节。</li>
+<li>低责任心：得分接近1，表示个体可能较为随意，不太注重规划和细节。</li>
+<h3>4.情绪稳定性</h3>
+        <li>高情绪稳定性：得分接近10，表示个体情绪平稳，抗压能力强，不易焦虑。</li>
+<li>低情绪稳定性：得分接近1，表示个体可能情绪波动大，易感焦虑和压力。</li>
+<h3>5.开放性</h3>
+        <li>高开放性：得分接近10，表示个体好奇心强，创造力丰富，接受新事物。</li>
+<li>低开放性：得分接近1，表示个体可能较为传统，保守，不太愿意尝试新事物。</li>
+    </ul>
+</div>
+
+    <script>
+        function calculateResults() {
+            var form = document.getElementById('personalityTestForm');
+            var extroversionScore = 0;
+            var agreeablenessScore = 0;
+            var conscientiousnessScore = 0;
+            var neuroticismScore = 0;
+            var opennessScore = 0;
+
+            // 计算每个特质的得分
+            // 假设每个问题的<select>元素的id是"q1", "q2", ..., "q10"
+            for (var i = 1; i <= 10; i++) {
+                var select = document.getElementById('q' + i);
+                var score = parseInt(select.options[select.selectedIndex].value);
+
+                // 根据问题分配得分到对应的特质
+                switch (i) {
+                    case 1: // 外向性
+                    case 6:
+                        extroversionScore += score;
+                        break;
+                    case 2: // 宜人性
+                    case 7:
+                        agreeablenessScore += score;
+                        break;
+                    case 3: // 责任心
+                    case 8:
+                        conscientiousnessScore += score;
+                        break;
+                    case 4: // 情绪稳定性
+                    case 9:
+                        neuroticismScore += score;
+                        break;
+                    case 5: // 开放性
+                    case 10:
+                        opennessScore += score;
+                        break;
+                }
+            }
+
+            // 反转需要反转的特质的得分
+            // 假设反转的题目是1, 3, 4, 7, 9
+            extroversionScore -= document.getElementById('q1').options[document.getElementById('q1').selectedIndex].value;
+            agreeablenessScore -= document.getElementById('q7').options[document.getElementById('q7').selectedIndex].value;
+            conscientiousnessScore -= document.getElementById('q3').options[document.getElementById('q3').selectedIndex].value;
+            neuroticismScore -= document.getElementById('q9').options[document.getElementById('q9').selectedIndex].value;
+
+            // 显示结果
+            document.getElementById('extroversionScore').textContent = extroversionScore;
+            document.getElementById('agreeablenessScore').textContent = agreeablenessScore;
+            document.getElementById('conscientiousnessScore').textContent = conscientiousnessScore;
+            document.getElementById('neuroticismScore').textContent = neuroticismScore;
+            document.getElementById('opennessScore').textContent = opennessScore;
+
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+<div style="flex-grow: 1;"></div><footer style="text-align: center; padding: 20px; background-color: #f0f0f0;">© 2024 壹适心理 鲁ICP备2023010371号-1</footer></div></body>
+</html>

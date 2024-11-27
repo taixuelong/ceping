@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>课程咨询群</title>
+<style>
+  body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .course-info {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .course-image {
+    max-width: 100%; /* 图片的最大宽度为容器的宽度 */
+    height: auto; /* 高度根据宽度自适应 */
+    width: auto; /* 宽度根据高度自适应 */
+  }
+
+  .expiration-info {
+    text-align: center;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+  <!-- 主容器 -->
+  <div class="container">
+<div class="course-info">
+  <div><h2>课程咨询群</h2></div>
+  <img src="image-url.jpg" alt="课程咨询群图片" class="course-image">
+</div>
+<div class="expiration-info">
+  <div id="current-date"></div>
+  <div id="expiration-countdown"></div>
+</div>
+
+<script>
+  function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  function calculateExpirationDate() {
+    const today = new Date();
+    const expirationDate = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+    return expirationDate;
+  }
+
+  
+    function getStartDate() {
+      let startDate = localStorage.getItem('startDate');
+      if (!startDate) {
+        startDate = new Date();
+        localStorage.setItem('startDate', startDate.toISOString());
+      } else {
+        startDate = new Date(startDate);
+      }
+      return startDate;
+    }
+    
+    function updateCountdown() {
+      const startDate = getStartDate();
+      const now = new Date();
+      const timeDiff = now - startDate;
+      const daysPassed = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+      
+      if (daysPassed >= 7) {
+        localStorage.setItem('startDate', now.toISOString());
+        document.getElementById('expiration-countdown').textContent = `本二维码还有7天到期`;
+      } else {
+        const daysLeft = 7 - daysPassed;
+        document.getElementById('expiration-countdown').textContent = `本二维码还有${daysLeft}天到期`;
+      }
+    }
+    
+    const startDate = getStartDate();
+    updateCountdown();
+    setInterval(updateCountdown, 1000 * 60 * 60 * 24);
+    
+
+  const currentDateElement = document.getElementById('current-date');
+
+  currentDateElement.textContent = `今天日期：${formatDate(new Date())}`;
+  updateCountdown();
+  setInterval(updateCountdown, 1000 * 60 * 60 * 24); // 更新倒计时每天一次
+</script>
+  <!-- 结束 JavaScript 脚本 -->
+
+  <!-- 结束主容器 -->
+</div>
+</body>
+</html>
