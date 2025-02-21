@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自闭症光谱量表（AQ）在线测评</title>
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --secondary: #6c757d;
+            --background: #f8f9fa;
+            --text: #212529;
+}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .question-card {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+
+        .options-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #dee2e6;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover {
+            border-color: var(--primary);
+            background: #f8fbff;
+        }
+
+        input[type="radio"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #adb5bd;
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+        }
+
+        input[type="radio"]:checked {
+            border-color: var(--primary);
+            background: var(--primary);
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: opacity 0.2s;
+            width: 100%;
+            margin: 2rem 0;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .result-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .dimension-progress {
+            margin: 1rem 0;
+        }
+
+        progress {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+        }
+
+        progress::-webkit-progress-bar {
+            background: #e9ecef;
+            border-radius: 4px;
+        }
+
+        progress::-webkit-progress-value {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        .question-card {
+        /* 保持原有样式 */
+        transition: border 0.3s ease;
+    }
+
+    .question-card.unanswered {
+        border: 2px solid #ff4444;
+        background-color: #fff8f8;
+    }
+
+    /* 添加动画效果 */
+    @keyframes highlight {
+        0% { background-color: #fff; }
+        50% { background-color: #fff8f8; }
+        100% { background-color: #fff; }
+    }
+
+    .highlight {
+        animation: highlight 1s ease;
+    }
+    /* 在已有的 style 标签中添加 */
+    .question-card p strong {
+        color: var(--primary);
+        margin-right: 8px;
+        display: inline-block;
+        min-width: 24px;
+    }
+    </style>
+ <style>
+        /* 添加分数解释样式 */
+        .score-explanation {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .dimension-desc {
+            margin: 0.5rem 0;
+            color: #666;
+        }
+    </style>
+<style>
+    /* 基础样式调整 */
+    body {
+        padding: 10px;
+        margin: 0;
+    }
+
+    .container {
+        max-width: 100%;
+        padding: 10px;
+        margin: 0 auto;
+    }
+
+    /* 标题样式调整 */
+    .header {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* 题目卡片样式调整 */
+    .question-card {
+        padding: 1rem;
+        margin-bottom: 0.8rem;
+    }
+
+    /* 选项组样式调整 */
+    .options-group {
+        display: flex;
+        flex-direction: column;  /* 手机端选项垂直排列 */
+        gap: 0.5rem;
+        margin-top: 0.8rem;
+    }
+
+    .option-label {
+        width: 100%;     /* 选项占满宽度 */
+        padding: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    /* 进度条容器调整 */
+    .dimension-progress {
+        margin: 0.8rem 0;
+    }
+
+    /* 结果卡片调整 */
+    .result-card {
+        padding: 1rem;
+        margin-top: 1rem;
+    }
+
+    /* 响应式媒体查询 */
+    @media screen and (max-width: 768px) {
+        .container {
+            padding: 5px;
+        }
+
+        .header h1 {
+            font-size: 1.2rem;
+        }
+
+        button {
+            padding: 0.8rem 1rem;
+            margin: 1rem 0;
+        }
+
+        .score-explanation {
+            padding: 1rem;
+        }
+    }
+
+    /* 添加触摸设备的优化 */
+    @media (hover: none) {
+        .option-label {
+            min-height: 44px; /* 确保触摸目标足够大 */
+        }
+
+        input[type="radio"] {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        button {
+            min-height: 44px;
+        }
+    }
+</style>
+<style>
+    /* 在已有的样式中添加或修改 */
+    .question-card p {
+        font-size: 1.1rem;  /* 题目文字大小 */
+        margin-bottom: 0.8rem;
+        line-height: 1.5;
+        color: var(--text);
+    }
+
+    .option-label {
+        font-size: 0.95rem;  /* 选项文字大小 */
+        width: 100%;
+        padding: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    /* 响应式调整 */
+    @media screen and (max-width: 768px) {
+        .question-card p {
+            font-size: 1rem;  /* 移动端题目文字大小 */
+        }
+
+        .option-label {
+            font-size: 0.9rem;  /* 移动端选项文字大小 */
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>自闭症光谱量表（AQ）测评</h1>
+            <p>请根据您的真实情况选择最符合的选项</p>
+        <!-- 添加清除按钮 -->
+            <button onclick="clearAnswers()" style="background: var(--secondary); margin-top: 1rem;">清除所有答案</button>
+        </div>
+
+        <form id="aqForm"></form>
+
+        <button type="button" onclick="calculateScore()">提交并查看结果</button>
+        
+        <div class="result-card" id="resultSection">
+            <h2>测评结果</h2>
+            <div id="resultContent"></div>
+<div id="scoreExplanation"></div>
+        </div>
+    </div>
+
+    <script>
+        // 完整题目数据示例（需补全全部50题）
+        const aqData = [
+            { 
+                id: 1, 
+                text: "相比独立做事，我更喜欢和别人合作", 
+                reverse: true,   // 反向题标记
+                dimension: "社交能力" 
+            },
+            { 
+                id: 2, 
+                text: "我比较倾向于一直用相同的方法做事", 
+                reverse: false, 
+                dimension: "注意力转换" 
+            },
+            // ... 根据维度分类补充剩余题目，特别注意 reverse 标记
+            // 示例反向题（社交能力维度）：
+{ 
+    id: 3, 
+                text: "当我试着想象某件事时，脑海里很容易浮现画面", 
+                reverse: true, 
+                dimension: "想象力" 
+            },
+{ 
+    id: 4, 
+                text: "我经常过于专注于一件事，而忽略了其他事", 
+                reverse: false, 
+                dimension: "注意力转换" 
+            },
+{ 
+    id: 5, 
+                text: "我经常能注意到别人没察觉到的细微声音", 
+                reverse: false, 
+                dimension: "细节关注" 
+            },
+
+{ 
+    id: 6, 
+                text: "我常留意汽车的车牌、或类似的一串信息", 
+                reverse: false, 
+                dimension: "细节关注" 
+            },
+{ 
+    id: 7, 
+                text: "虽然我觉得自己很有礼貌，但还是经常被人说我说了不礼貌的话", 
+                reverse: false, 
+                dimension: "沟通能力" 
+            },
+{ 
+    id: 8, 
+                text: "我阅读故事时，能轻易想象出故事人物的模样", 
+                reverse: true, 
+                dimension: "想象力" 
+            },
+{ 
+    id: 9, 
+                text: "我对日期着迷（我喜欢与日期有关的事物）", 
+                reverse: false, 
+                dimension: "细节关注" 
+            },
+
+{ 
+    id: 10, 
+                text: "在社交聚会中，我能轻松保持对不同人谈话内容的注意力", 
+                reverse: true, 
+                dimension: "注意力转换" 
+            },
+
+
+            { 
+                id: 11, 
+                text: "参与社交场合对我来说很容易", 
+                reverse: true, 
+                dimension: "社交能力" 
+            },
+
+{ 
+    id: 12, 
+                text: "我容易注意到别人没察觉到的细节", 
+                reverse: false, 
+                dimension: "细节关注" 
+            },
+{ 
+    id: 13, 
+                text: "相比参加聚会，我更喜欢去图书馆", 
+                reverse: false, 
+                dimension: "社交能力" 
+            },
+{ 
+    id: 14, 
+                text: "编瞎话对我来说很容易", 
+                reverse: true, 
+                dimension: "沟通能力" 
+            },
+{ 
+    id: 15, 
+                text: "我发现自己对人的兴趣远超过对事的兴趣", 
+                reverse: true, 
+                dimension: "社交能力" 
+            },
+{ 
+    id: 16, 
+                text: "我容易有强烈的兴趣，当不能做感兴趣的事时会生气", 
+                reverse: false, 
+                dimension: "注意力转换" 
+            },
+{ 
+    id: 17, 
+                text: "我喜欢社交闲聊", 
+                reverse: true, 
+                dimension: "想象力" 
+            },
+{ 
+    id: 18, 
+                text: "我说话时，别人不太容易插得上话", 
+                reverse: false, 
+                dimension: "沟通能力" 
+            },
+{ 
+    id: 19, 
+                text: "我对数字着迷（我喜欢与数字有关的事物）", 
+                reverse: false, 
+                dimension: "细节关注" 
+            },
+{ 
+    id: 20, 
+                text: "我阅读故事时，猜测故事中人物的意图对我来说很困难", 
+                reverse: false, 
+                dimension: "想象力" 
+            },
+{ 
+    id: 21, 
+                text: "我并不特别喜欢读小说", 
+                reverse: false, 
+                dimension: "想象力" 
+            },
+{ 
+    id: 22, 
+                text: "交新朋友对我来说很困难", 
+                reverse: false, 
+                dimension: "社交能力" 
+            },
+{ 
+    id: 23, 
+                text: "我总会留意各种事物的模式（例如：如何分类、是否有因果关系或可预测性等）", 
+                reverse: false, 
+                dimension: "细节关注" 
+            },
+{ 
+    id: 24, 
+                text: "相比去博物馆，我更喜欢去剧院", 
+                reverse: true, 
+                dimension: "想象力" 
+            },
+{ 
+    id: 25, 
+                text: "即使日常作息被打乱，我也不会生气", 
+                reverse: true, 
+                dimension: "注意力转换" 
+            },
+{ 
+    id: 26, 
+                text: "我经常不知道如何让对话继续下去", 
+                reverse: false, 
+                dimension: "沟通能力" 
+            },
+{ 
+    id: 27, 
+                text: "与人谈话时，我能轻易察觉对方话语中的弦外之音", 
+                reverse: true, 
+                dimension: "想象力" 
+            },
+{ 
+    id: 28, 
+                text: "我通常更关注大局，而非小细节", 
+                reverse: true, 
+                dimension: "细节关注" 
+            },
+{ 
+    id: 29, 
+                text: "我不擅长记住电话号码", 
+                reverse: true, 
+                dimension: "细节关注" 
+            },
+{ 
+    id: 30, 
+                text: "我通常不会注意到情形或别人外表的细微变化", 
+                reverse: true, 
+                dimension: "细节关注" 
+            },
+{ 
+    id: 31, 
+                text: "我知道怎么判断别人是否厌烦我在说话", 
+                reverse: true, 
+                dimension: "想象力" 
+            },
+{ 
+    id: 32, 
+                text: "同时做两件以上的事对我来说很容易", 
+                reverse: true, 
+                dimension: "注意力转换" 
+            },
+{ 
+    id: 33, 
+                text: "我打电话时，不太确定什么时候该我接话", 
+                reverse: false, 
+                dimension: "沟通能力" 
+            },
+{ 
+    id: 34, 
+                text: "我喜欢随性地做事", 
+                reverse: true, 
+                dimension: "注意力转换" 
+            },
+{ 
+    id: 35, 
+                text: "我常常是最后一个明白笑话笑点的人", 
+                reverse: false, 
+                dimension: "沟通能力" 
+            },
+{ 
+    id: 36, 
+                text: "我能通过别人的表情轻易猜出他们的想法或感觉", 
+                reverse: true, 
+                dimension: "社交能力" 
+            },
+{ 
+    id: 37, 
+                text: "被打扰后，我能很快回到被打扰前在做的事", 
+                reverse: true, 
+                dimension: "注意力转换" 
+            },
+{ 
+    id: 38, 
+                text: "我擅长社交闲聊", 
+                reverse: true, 
+                dimension: "沟通能力" 
+            },
+{ 
+    id: 39, 
+                text: "我常被告知总是重复说同样的事", 
+                reverse: false, 
+                dimension: "沟通能力" 
+            },
+{ 
+    id: 40, 
+                text: "小时候我喜欢和玩伴玩假装性的游戏（例如：过家家）", 
+                reverse: true, 
+                dimension: "想象力" 
+            },
+{ 
+    id: 41, 
+                text: "我喜欢搜集某类事物的相关信息（例如：有关汽车、鸟类、火车或植物类的信息）", 
+                reverse: false, 
+                dimension: "细节关注" 
+            },
+{ 
+    id: 42, 
+                text: "想象变成另一个人对我来说很困难", 
+                reverse: false, 
+                dimension: "沟通能力" 
+            },
+{ 
+    id: 43, 
+                text: "我喜欢仔细规划我参与的任何活动", 
+                reverse: false, 
+                dimension: "注意力转换" 
+            },
+{ 
+    id: 44, 
+                text: "我喜欢社交场合", 
+                reverse: true, 
+                dimension: "社交能力" 
+            },
+{ 
+    id: 45, 
+                text: "推测别人的意图对我来说很困难", 
+                reverse: false, 
+                dimension: "社交能力" 
+            },
+{ 
+    id: 46, 
+                text: "新的情况（状况）会让我焦虑", 
+                reverse: false, 
+                dimension: "注意力转换" 
+            },
+{ 
+    id: 47, 
+                text: "我喜欢结识新朋友", 
+                reverse: true, 
+                dimension: "社交能力" 
+            },
+{ 
+    id: 48, 
+                text: "我是个善于交际的人", 
+                reverse: true, 
+                dimension: "沟通能力" 
+            },
+{ 
+    id: 49, 
+                text: "我不擅长记住别人的生日", 
+                reverse: true, 
+                dimension: "细节关注" 
+            },
+
+{ 
+    id: 50, 
+                text: "跟小孩玩假装性的游戏对我来说很容易", 
+                reverse: true, 
+                dimension: "想象力" 
+            },
+
+        ]
+// 动态生成题目到表单
+function renderQuestions() {
+  const form = document.getElementById('aqForm');
+   // 定义选项文本
+   const scoreTexts = {
+    1: "完全不同意",
+    2: "基本不同意",
+    3: "基本同意",
+    4: "完全同意"
+  };
+  aqData.forEach(question => {
+    // 创建题目容器
+    const questionDiv = document.createElement('div');
+    questionDiv.className = 'question-card';
+    
+    // 创建题目标题
+    const questionText = document.createElement('p');
+    questionText.innerHTML = `<strong>${question.id}.</strong> ${question.text}`; // 添加题号
+    questionDiv.appendChild(questionText);
+    
+    // 创建选项组
+    const optionsGroup = document.createElement('div');
+    optionsGroup.className = 'options-group';
+    
+    // 添加四个选项（1-4分）
+    for (let score = 1; score <= 4; score++) {
+      const optionLabel = document.createElement('label');
+      optionLabel.className = 'option-label';
+      
+      // 创建单选按钮
+      const radioButton = document.createElement('input');
+      radioButton.type = 'radio';
+      radioButton.name = `q${question.id}`; // 每题唯一命名
+      radioButton.value = score;
+      //radioButton.checked = score === 1; // 默认选第一个选项
+      
+      // 绑定点击事件（可选）
+      radioButton.addEventListener('change', () => {
+        console.log(`Question ${question.id} selected score:`, score);
+      });
+      
+      optionLabel.appendChild(radioButton);
+      optionLabel.appendChild(document.createTextNode(scoreTexts[score]));
+      optionsGroup.appendChild(optionLabel);
+    }
+    
+    // 将选项组和题目添加到容器
+    questionDiv.appendChild(optionsGroup);
+    form.appendChild(questionDiv);
+  });
+}
+
+// 页面加载完成后渲染题目
+window.onload = function() {
+    renderQuestions();
+};
+document.getElementById('aqForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // 阻止表单默认提交
+    calculateScore();
+});
+        // 计算分数（已处理反向题）
+        function calculateScore() {
+            console.log('Calculate score function called');
+            // 检查未答题目
+    const unansweredQuestions = [];
+    aqData.forEach(q => {
+        const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+        if (!selected) {
+            unansweredQuestions.push(q.id);
+        }
+    });
+
+    // 如果有未答题目，显示提示并定位
+    if (unansweredQuestions.length > 0) {
+        alert(`您还有 ${unansweredQuestions.length} 道题目未回答，请完成所有题目后再提交。`);
+        // 滚动到第一个未答题目的位置
+        const firstUnanswered = document.querySelector(`input[name="q${unansweredQuestions[0]}"]`);
+        if (firstUnanswered) {
+            firstUnanswered.closest('.question-card').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+            // 高亮未答题目
+            unansweredQuestions.forEach(qId => {
+                const questionCard = document.querySelector(`input[name="q${qId}"]`).closest('.question-card');
+                questionCard.style.border = '2px solid #ff4444';
+                // 3秒后取消高亮
+                setTimeout(() => {
+                    questionCard.style.border = '';
+                }, 3000);
+            });
+        }
+        return false;
+    }
+            const results = {
+                total: 0,
+                dimensions: {
+                    "社交能力": 0,
+                    "注意力转换": 0,
+                    "细节关注": 0,
+                    "沟通能力": 0,
+                    "想象力": 0
+                }
+            };
+
+            aqData.forEach(q => {
+                const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+                if(selected) {
+                    let score = parseInt(selected.value);
+                    // 反向计分处理：4点量表 1→4, 2→3, 3→2, 4→1
+                    if(q.reverse) score = 5 - score; 
+                    
+                    results.total += score;
+                    results.dimensions[q.dimension] += score;
+                }
+            });
+            console.log("Results calculated:", results);
+            showResults(results);
+            saveToCookie(results);
+ return false; // 阻止表单提交
+        }
+        function showResults(results) {
+            const resultContent = `
+                <p><strong>总分：</strong> ${results.total}</p>
+                <div class="dimension-progress">
+                    <p>社交能力: ${results.dimensions['社交能力']}/40</p>
+            <progress value="${results.dimensions['社交能力']}" max="40"></progress>
+            <p>注意力转换: ${results.dimensions['注意力转换']}/40</p>
+            <progress value="${results.dimensions['注意力转换']}" max="40"></progress>
+            <p>细节关注: ${results.dimensions['细节关注']}/40</p>
+            <progress value="${results.dimensions['细节关注']}" max="40"></progress>
+            <p>沟通能力: ${results.dimensions['沟通能力']}/40</p>
+            <progress value="${results.dimensions['沟通能力']}" max="40"></progress>
+            <p>想象力: ${results.dimensions['想象力']}/40</p>
+            <progress value="${results.dimensions['想象力']}" max="40"></progress>
+        </div>
+            `;
+            document.getElementById('resultContent').innerHTML = resultContent;
+document.getElementById('resultSection').style.display = 'block';
+// 添加分数解释
+const explanation = `
+        <div class="score-explanation">
+            <h3>分数说明</h3>
+            <p><strong>总分评估：</strong></p>
+            <p>${getTotalExplanation(results.total)}</p>
+            
+            <p><strong>维度解释：</strong></p>
+            ${Object.entries(results.dimensions).map(([dim, score]) => `
+                <div class="dimension-desc">
+                    <p>${dim}（${score}/40）：${getDimensionExplanation(dim, score)}</p>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    document.getElementById('scoreExplanation').innerHTML = explanation;
+}
+        // 清除答案
+        function clearAnswers() {
+            // 重置所有单选按钮
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.checked = false;
+            });
+            // 隐藏结果
+            document.getElementById('resultSection').style.display = 'none';
+            // 清除Cookie
+            document.cookie = 'aqResults=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        }
+
+        // 显示结果（添加解释说明）
+       
+
+        // 总分评估逻辑
+        function getTotalExplanation(total) {
+            if(total >= 160) return "显著的自闭症谱系特质表现，建议寻求专业评估";
+            if(total >= 120) return "存在一定自闭症谱系特征，建议关注相关表现";
+            return "自闭症谱系特质表现不明显，属一般人群范围";
+        }
+
+        // 维度解释逻辑
+        function getDimensionExplanation(dimension, score) {
+            const thresholds = {
+                "社交能力": { high: 30, low: 10 },
+        "注意力转换": { high: 32, low: 8 },
+        "细节关注": { high: 30, low: 10 },
+        "沟通能力": { high: 30, low: 10 },
+        "想象力": { high: 30, low: 10 }
+                // ... 补充其他维度阈值
+            };
+            const desc = {
+                "社交能力": "分数越高表示社交互动困难越明显",
+                "注意力转换": "分数越高表示适应变化能力越差",
+"细节关注": "分数越高表示对细节的关注程度越高",
+        "沟通能力": "分数越高表示沟通灵活性越低",
+        "想象力": "分数越高表示想象力较弱或现实思维较强"
+                // ... 补充其他维度描述
+            };
+            if (!thresholds[dimension]) {
+        console.error(`Missing thresholds for dimension: ${dimension}`);
+        return "未知维度";
+    }
+            return `${desc[dimension]}（${score > thresholds[dimension].high ? '高' : score < thresholds[dimension].low ? '低' : '中等'}表现）`;
+        }
+        
+        // 添加 saveToCookie 函数定义
+        function saveToCookie(results) {
+            try {
+                const resultsString = JSON.stringify(results);
+                document.cookie = `aqResults=${resultsString}; max-age=86400; path=/`;
+            } catch (error) {
+                console.error('保存结果到 Cookie 时出错:', error);
+            }
+        }
+    </script>
+</body>
+
+</html>
