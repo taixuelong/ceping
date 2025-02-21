@@ -1,75 +1,194 @@
-<!DOCTYPE html>  
-<html lang="zh">  
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>心理评估首页</title>  
-    <style>  
-        body {  
-            font-family: Arial, sans-serif;  
-            margin: 0;  
-            padding: 0;  
-            background-color: #f4f4f4;  
-        }  
-  
-        .container {  
-            display: flex;  
-            flex-direction: column;  
-            align-items: center;  
-            justify-content: center;  
-            height: 100vh;  
-            padding: 20px;  
-        }  
-  
-        .button-container {  
-            display: flex;  
-            flex-direction: column;  
-            align-items: center;  
-            margin-top: 20px;  
-        }  
-  
-        .button {  
-            display: flex;  
-            justify-content: center;  
-            align-items: center;  
-            min-width: 200px; /* 设置最小宽度 */  
-            height: 60px;  
-            background-color: #f4b610;  
-            color: white;  
-            border: none;  
-            border-radius: 5px;  
-            font-size: 18px;  
-            text-decoration: none;  
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);  
-            transition: all 0.3s ease-in-out;  
-            margin-bottom: 10px;  
-            padding: 0 15px; /* 增加内边距 */  
-            white-space: nowrap; /* 防止文字换行 */  
-            overflow: hidden; /* 隐藏超出按钮边界的内容 */  
-            text-overflow: ellipsis; /* 当文字超出时显示省略号 */  
-        }  
-  
-        .button:hover {  
-            background-color: #2980b9;  
-            cursor: pointer;  
-        }  
-  
-        /* 移除最后一个按钮的下边距 */  
-        .button-container .button:last-child {  
-            margin-bottom: 0;  
-        }  
-    </style>  
-</head>  
-<body>  
-    <div class="container">  
-        <h1>心理评估首页</h1>  
-        <div class="button-container">  
-            <a href="xingge.html" class="button">性格测试</a>  
-            <a href="yiyu.html" class="button">抑郁自测</a>  
-            <a href="jiaolv.html" class="button">焦虑自测</a> 
-            <a href="video1.html" class="button">呼吸法</a>  
-        </div>  
-    </div>  
-<div style="flex-grow: 1;"></div><footer style="text-align: center; padding: 20px; background-color: #f0f0f0;">© 2024 鲁ICP备2024109961号</footer></div>
-</body>  
+<!DOCTYPE html>
+<html lang="zh" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心理健康评估 | MindCare</title>
+    <style>
+        :root {
+            --primary: #4A90E2;
+            --secondary: #6C5CE7;
+            --accent: #FF6B6B;
+            --light: #F8F9FA;
+            --dark: #2D3436;
+            --radius: 12px;
+            --shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            transform: translateY(0);
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+        }
+
+        .card a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-top: 1px solid rgba(0,0,0,0.1);
+            margin-top: auto;
+            backdrop-filter: blur(5px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .card-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 微交互动画 */
+        .card {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                      box-shadow 0.3s ease;
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        /* 加载动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            animation: fadeIn 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>心理健康评估</h1>
+            <p class="subtitle">专业心理测评工具，关注您的心理健康</p>
+        </div>
+        
+        <div class="card-group">
+            <div class="card">
+                <a href="xingge.html">
+                    <h2>性格评估</h2>
+                    <p>了解您的个性特征和优势</p>
+                </a>
+            </div>
+            
+            <div class="card">
+                <a href="yiyu.html">
+                    <h2>抑郁自评</h2>
+                    <p>专业抑郁症状筛查量表</p>
+                </a>
+            </div>
+            
+            <div class="card">
+                <a href="jiaolv.html">
+                    <h2>焦虑评估</h2>
+                    <p>检测您的焦虑水平</p>
+                </a>
+            </div>
+            
+            <div class="card">
+                <a href="video1.html">
+                    <h2>放松训练</h2>
+                    <p>呼吸调节与放松技巧</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        © 2024 心理健康服务平台 鲁ICP备2024109961号
+    </footer>
+</body>
 </html>
