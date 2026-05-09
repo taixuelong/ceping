@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>九型人格专业测试 | 基于ACT框架深度解读</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            background: #f0f4f8;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #1e2a3e;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.15);
+            overflow: hidden;
+            padding: 24px 28px 48px;
+        }
+        h1 {
+            font-size: 1.9rem;
+            margin-top: 0;
+            margin-bottom: 0.25rem;
+            color: #0f3b5c;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .sub {
+            color: #4a627a;
+            border-left: 4px solid #2c7da0;
+            padding-left: 16px;
+            margin: 16px 0 24px 0;
+            font-weight: 400;
+            background: #eef2fa;
+            border-radius: 20px;
+            padding: 12px 18px;
+        }
+        .progress-area {
+            background: #e9edf2;
+            border-radius: 40px;
+            margin: 20px 0 20px;
+            height: 10px;
+            width: 100%;
+        }
+        .progress-fill {
+            background: #2c7da0;
+            width: 0%;
+            height: 10px;
+            border-radius: 40px;
+            transition: width 0.2s ease;
+        }
+        .question-card {
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+            padding: 18px 22px;
+            margin-bottom: 22px;
+            border: 1px solid #dfe7ef;
+            transition: all 0.2s;
+        }
+        .q-text {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .opt-btn {
+            flex: 1;
+            min-width: 60px;
+            text-align: center;
+            background: #f8fafc;
+            border: 1px solid #cbdde9;
+            border-radius: 60px;
+            padding: 8px 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.15s;
+            font-size: 0.9rem;
+        }
+        .opt-btn.selected {
+            background: #2c7da0;
+            border-color: #2c7da0;
+            color: white;
+            box-shadow: 0 2px 6px rgba(44,125,160,0.3);
+        }
+        .opt-label {
+            font-size: 0.7rem;
+            display: block;
+            color: #4b6e8a;
+        }
+        .opt-btn.selected .opt-label {
+            color: rgba(255,255,240,0.9);
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 32px 0 20px;
+        }
+        button {
+            background: #e2e8f0;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+        button.primary {
+            background: #2c7da0;
+            color: white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        button.primary:hover {
+            background: #1f5e7a;
+            transform: translateY(-1px);
+        }
+        .result-area {
+            margin-top: 40px;
+            background: #f8fafd;
+            border-radius: 32px;
+            padding: 28px;
+            border: 1px solid #dce5ef;
+        }
+        .type-badge {
+            display: inline-block;
+            background: #1f5e7a;
+            color: white;
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .scores-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .score-item {
+            background: white;
+            border-radius: 24px;
+            padding: 10px 14px;
+            flex: 1 1 100px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .act-insight {
+            background: #eef3fa;
+            padding: 18px 22px;
+            border-radius: 24px;
+            margin: 18px 0;
+            border-left: 5px solid #2c7da0;
+        }
+        hr {
+            margin: 24px 0;
+            border-color: #dfe6ef;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.75rem;
+            color: #6c889e;
+        }
+        @media (max-width: 650px) {
+            .container { padding: 16px; }
+            .opt-btn { font-size: 0.75rem; min-width: 50px; }
+        }
+        .warning {
+            background: #fff3e0;
+            border-left: 5px solid #e67e22;
+            padding: 12px 18px;
+            border-radius: 20px;
+            margin-top: 18px;
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="app">
+    <h1>🌿 九型人格深度探索</h1>
+    <div class="sub">📌 108题专业版 · 结合ACT心理灵活性框架 · 看见你的固有模式</div>
+    <div class="progress-area"><div class="progress-fill" id="progressFill"></div></div>
+    <div id="questionsArea"></div>
+    <div class="nav-buttons">
+        <button id="prevBtn"disabled>← 上一页</button>
+        <button id="nextBtn" class="primary">下一页 →</button>
+        <button id="submitBtn" style="display:none;" class="primary">✨ 查看结果</button>
+    </div>
+    <div id="resultArea" style="display:none;"></div>
+    <footer>本量表基于九型人格公开题库整理，仅用于自我觉察与成长参考。结合ACT（接纳承诺疗法）视角提供策略解读。</footer>
+</div>
+<script>
+    // --------------------------------------------------------------
+    // 完整108道九型人格题目 (1-5分，非常不同意 -> 非常同意)
+    // 题目经过整理自经典九型题库，覆盖九种核心动机
+    // 每题隶属一个特定类型，保证每型12题 (12*9=108)
+    // --------------------------------------------------------------
+    const questions = [
+        // 1号 完美型 (12题)
+        "我常常注意纠正错误，对不完美的事情很难容忍。","我认为做事必须按规则和标准执行。","我常觉得自己做得不够好，对自己要求严格。",
+        "我容易因别人不守规矩而感到烦躁。","我喜欢把物品摆放得整齐有序。","我会因为小错误而自责很久。",
+        "我很难接受含糊其辞或模棱两可的回答。","我经常检查工作，确保没有疏漏。","我内心有一个强烈的是非观念。",
+        "我会因为道德标准而批判自己或他人。","我认为细节决定成败，习惯反复确认。","我追求每个领域都做到尽善尽美。",
+        // 2号 助人型
+        "我习惯主动帮助身边的人，哪怕自己受累。","我很容易察觉他人的需求和情绪。","我害怕被他人忽视，渴望被需要。",
+        "我常常把别人的事放在第一位，忽略自己。","我会因为无法帮助他人而感到内疚。","我乐意付出，但有时也希望对方能回报。",
+        "我对家人朋友很细心，常常记得他们的喜好。","我很难开口拒绝别人的请求。","我习惯用付出来维系关系。",
+        "我总在关注谁需要安慰或支持。","我认为被爱的前提是我要足够体贴。","我很难表达自己的需求，怕麻烦别人。",
+        // 3号 成就型
+        "我渴望成为众人眼中的成功者。","我非常注重效率和成果。","我害怕被人看做失败者或没有价值。",
+        "我会为了目标放弃休息和娱乐。","我常常调整形象来适应不同场合。","我习惯比较自己和他人的成就。",
+        "我容易因被批评而沮丧很久。","我希望自己的努力能被看见和认可。","我很少在人前展示脆弱一面。",
+        "我认为成果比过程更重要。","我常常设定高目标，并全力以赴。","我需要外界的掌声来确认自我价值。",
+        // 4号 浪漫型
+        "我觉得自己与他人本质上不同。","我经常被艺术、诗歌和深刻情感吸引。","我会因为生活缺乏意义而陷入忧郁。",
+        "我渴望找到一个完全懂我的人。","我容易沉迷于过去的遗憾或美好回忆。","我讨厌随波逐流，追求独特风格。",
+        "情绪起伏对我来说是日常体验。","我感觉很少有人能真正理解我的内心。","我会因为被忽视而产生强烈失落。",
+        "我常常思考我是谁，生命的意义是什么。","我有时候会远离人群来保护我的独特性。","我的情绪感受比周围人更细腻深刻。",
+        // 5号 理智型
+        "我喜欢独处，长时间沉浸在思考和知识中。","我重视隐私，不轻易表露情感。","我觉得情感会干扰理性判断。",
+        "我习惯收集资料后再做决定。","有时候我宁愿观察而不参与社交。","我对无用社交感到疲倦。",
+        "当我压力大时，会封闭自己，分析问题。","我需要足够个人空间来回充电。","我擅长从理论层面解构事物。",
+        "我不喜欢意外来访或突然的情绪索取。","我倾向于用逻辑而非感受回应他人。","我会为自己储备大量专业知识以防万一。",
+        // 6号 忠诚/质疑型
+        "我常常预想最坏的可能性。","我对别人保持一定警觉，不敢轻易信任。","我需要确定性的答案才安心。",
+        "做决定前我习惯反复求证。","我容易因为不确定性而焦虑失眠。","我依赖权威或可靠的盟友。",
+        "我对潜在的威胁非常敏感。","我习惯质疑和挑战潜在风险。","在团队中，我忠于信得过的伙伴。",
+        "我总是做最充分的准备，以防万一。","我有时怀疑自己的能力和判断。","我需要反复确认情况才感到安全。",
+        // 7号 活跃型
+        "我喜欢尝试新鲜有趣的事物，讨厌沉闷。","我的生活节奏快，常同时计划多个活动。","我习惯用快乐逃避痛苦或焦虑。",
+        "我很难长时间专注单一任务，容易分心。","我讨厌被束缚，追求自由和体验。","我经常主动寻找刺激和下一件好玩的事。",
+        "我不喜欢负面情绪，会快速转移注意力。","我擅长即兴发挥，灵活多变。","我害怕无聊，会不断找乐子填充时间。",
+        "我的思维跳跃，脑子里常有各种点子。","我会同时开启很多项目但容易半途而废。","我本能回避任何让我感到压抑的事情。",
+        // 8号 领袖型
+        "我喜欢掌控局面，直接表达愤怒。","我无法忍受不公平或被人控制。","我习惯保护弱势群体，路见不平。",
+        "我做事果断，很少犹豫。","我会用强势态度维护自身边界。","我很难忍受他人的软弱或优柔寡断。",
+        "我习惯直面冲突，不会逃避。","我渴望力量，想要影响环境。","我很少道歉，不愿示弱。",
+        "我会为在乎的人撑腰，但讨厌背判。","我精力充沛，喜欢挑战权威。","如果我感到被冒犯，会立刻反击。",
+        // 9号 和平型
+        "我喜欢保持和谐，不喜欢冲突。","我常常迎合别人意见，避免争执。","我容易忘记自己的需求，随大流。",
+        "我习惯拖延重要决定，维持现状。","我觉得自己平和，但有时会被视为被动。","我愿意调停矛盾，弥合分歧。",
+        "我会因为害怕冲突而压抑怒火。","我常常麻醉自己（如刷手机，吃东西）。","我总说“都行，随便”来维持气氛。",
+        "我的生活节奏缓慢，容易沉浸在自己世界。","我习惯于把自己的想法放在最后。","我宁愿退让也不想关系破裂。"
+    ];
+    // 确保108题 (上面每型12题*9=108)
+    // 类型映射: 索引0-11为1号，12-23为2号，24-35为3号, 36-47为4号, 48-59为5号 ,60-71为6号, 72-83为7号, 84-95为8号, 96-107为9号
+    const typeForQuestion = new Array(108).fill(0);
+    for(let i=0;i<108;i++) {
+        if(i<12) typeForQuestion[i]=1;
+        else if(i<24) typeForQuestion[i]=2;
+        else if(i<36) typeForQuestion[i]=3;
+        else if(i<48) typeForQuestion[i]=4;
+        else if(i<60) typeForQuestion[i]=5;
+        else if(i<72) typeForQuestion[i]=6;
+        else if(i<84) typeForQuestion[i]=7;
+        else if(i<96) typeForQuestion[i]=8;
+        else typeForQuestion[i]=9;
+    }
+    
+    // 存储答案 1-5分 (默认未答为0)
+    let answers = new Array(108).fill(0);
+    let currentPage = 0;
+    const itemsPerPage = 8;  // 每页8题 共14页（13页满+最后一页4题）
+    const totalPages = Math.ceil(108 / itemsPerPage);
+    
+    // 渲染当前页面
+    function renderPage() {
+        const start = currentPage * itemsPerPage;
+        const end = Math.min(start + itemsPerPage, 108);
+        const questionsDiv = document.getElementById('questionsArea');
+        let html = `<div style="margin-bottom:12px;"><strong>📋 第 ${currentPage+1} / ${totalPages} 页</strong>  (1-非常不同意  5-非常同意)</div>`;
+        for(let i=start; i<end; i++) {
+            const qNum = i+1;
+            const currentVal = answers[i];
+            html += `
+                <div class="question-card">
+                    <div class="q-text">${qNum}. ${questions[i]}</div>
+                    <div class="options" data-qidx="${i}">
+                        ${[1,2,3,4,5].map(score => `
+                            <div class="opt-btn ${currentVal===score ? 'selected' : ''}" data-score="${score}">
+                                ${score}<span class="opt-label">${score===1?'非常不同意':(score===2?'不同意':(score===3?'中立':(score===4?'同意':'非常同意')))
+                                }</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        questionsDiv.innerHTML = html;
+        
+        // 绑定选项事件
+        document.querySelectorAll('.options').forEach(optDiv => {
+            const qIdx = parseInt(optDiv.dataset.qidx);
+            optDiv.querySelectorAll('.opt-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const score = parseInt(btn.dataset.score);
+                    answers[qIdx] = score;
+                    renderPage(); // 重新渲染以更新选中样式
+                });
+            });
+        });
+        
+        // 更新进度条
+        const answeredCount = answers.filter(a => a !== 0).length;
+        const percent = (answeredCount / 108) * 100;
+        document.getElementById('progressFill').style.width = percent + '%';
+        
+        // 按钮显示逻辑
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        if(currentPage === totalPages-1) {
+            nextBtn.style.display = 'none';
+            submitBtn.style.display = 'inline-block';
+        } else {
+            nextBtn.style.display = 'inline-block';
+            submitBtn.style.display = 'none';
+        }
+        prevBtn.disabled = (currentPage === 0);
+    }
+    
+    function nextPage() {
+        if(currentPage < totalPages-1) {
+            currentPage++;
+            renderPage();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+    function prevPage() {
+        if(currentPage > 0) {
+            currentPage--;
+            renderPage();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+    
+    // 效度检测 + 计分 + ACT解读
+    function computeResults() {
+        const answeredCount = answers.filter(a => a !== 0).length;
+        if(answeredCount < 100) {
+            alert(`您只完成了${answeredCount}道题，为保证结果准确，请尽量完成所有108题。`);
+            return false;
+        }
+        // 效度: 最高原始分是否太低 (每型总分最高60分，最高分低于30视为可疑)
+        let typeScores = [0,0,0,0,0,0,0,0,0,0]; // 索引1-9
+        for(let i=0;i<108;i++) {
+            let t = typeForQuestion[i];
+            typeScores[t] += answers[i];
+        }
+        const maxScore = Math.max(...typeScores.slice(1));
+        if(maxScore < 30) {
+            alert("⚠️ 您的答题模式过于模糊，最高分低于30分，结果仅供参考。建议仔细体会真实感受后重测。");
+        }
+        // 最高分类型确定主型，同时提供次高分
+        let primaryType = 1;
+        for(let i=2;i<=9;i++) {
+            if(typeScores[i] > typeScores[primaryType]) primaryType = i;
+        }
+        // 计算方差等保留前二
+        let sorted = [1,2,3,4,5,6,7,8,9].map(t => ({type:t, score:typeScores[t]})).sort((a,b)=>b.score-a.score);
+        const main = sorted[0];
+        const second = sorted[1];
+        return { primaryType: main.type, primaryScore: main.score, secondType: second.type, secondScore: second.score, allScores: typeScores };
+    }
+    
+    // ACT 策略描述库 (基于之前的九种模式改写)
+    const actDescriptions = {
+        1: { name:"完美型", strategy:"用『高标准与正确性』来回避『我可能不够好/有缺陷』的感觉。你习惯于反复检查、纠错，试图通过控制细节来获得安全感。", actPath:"接纳不完美的可能性，与‘必须完美’的想法解离，按照‘关怀与真实’的价值行动，而非恐惧驱动。" },
+        2: { name:"助人型", strategy:"用『付出与牺牲』来换取被爱和被需要，回避『我不值得被爱』的痛苦。你习惯压抑自己的需求，期待别人主动读懂你。", actPath:"练习表达自己的真实需要，接纳‘不被满足也是可以的’，把给予的动力从交换转为纯粹的关怀。" },
+        3: { name:"成就型", strategy:"用『努力、成就和他人认可』来防御『我没有价值/失败』的感受。你将自我价值绑在外界评价上，容易陷入疲惫内耗。", actPath:"区分‘真正重要的价值’与‘证明自己’，学习按价值行动而非为了认可，接纳暂时的不被看见。" },
+        4: { name:"浪漫型", strategy:"用『独特性和深刻情感』来逃避『平庸/被忽略』的空虚感。你沉浸于缺失和渴望，期待一个完全懂你的人。", actPath:"与自己此时此地的体验连接，练习普通的美好，不再把意义感完全寄托在‘与众不同’上。" },
+        5: { name:"理智型", strategy:"用『抽离情感、积累知识』来回避被侵入或无能的恐惧。你习惯用理性分析取代真实的情绪连接。", actPath:"逐步接触自己的感受，允许适度依赖，重新连接身体与情感，践行有温度的价值。" },
+        6: { name:"质疑型", strategy:"用『预演灾难、反复确认、质疑风险』来获得虚幻的安全感。你的焦虑源于对不确定性的无法容忍。", actPath:"与不确定感共处，觉察脑海中的灾难剧本只是语言，不再跟随它，练习用勇气代替警觉。" },
+        7: { name:"活跃型", strategy:"用『追求新鲜与快乐』来逃避痛苦、无聊和内在的空虚。你习惯不断转移注意力，难以持久承诺。", actPath:"接纳痛苦的合理性，培养停留在单一事情上的能力，找到深层价值而非浅层刺激。" },
+        8: { name:"领袖型", strategy:"用『强势、控制和对抗』来回避脆弱、被背叛的感觉。你习惯先发制人，否认自己的柔软。", actPath:"承认自身脆弱也是力量，练习节制与倾听，将保护他人的能量转向与真实的联结。" },
+        9: { name:"和平型", strategy:"用『回避冲突、自我麻醉、随大流』来维持表面和谐，避免分离。你容易失去自我主张。", actPath:"练习自我坚定，容忍冲突中的不适，重新连接自己的渴望，从小边界开始行动。" }
+    };
+    
+    function showResults() {
+        const res = computeResults();
+        if(!res) return;
+        const { primaryType, primaryScore, secondType, secondScore, allScores } = res;
+        const mainInfo = actDescriptions[primaryType];
+        const secondInfo = actDescriptions[secondType];
+        // 展示雷达柱状
+        let scoreHTML = `<div class="scores-grid">`;
+        for(let t=1;t<=9;t++) {
+            let typeName = actDescriptions[t].name;
+            let score = allScores[t];
+            let percent = Math.min(100, Math.round((score/60)*100));
+            scoreHTML += `<div class="score-item"><strong>${typeName}</strong><br><span style="font-size:1.4rem;font-weight:bold;">${score}</span>/60<br><div style="background:#ddd;border-radius:8px;height:6px;margin-top:5px;"><div style="background:#2c7da0;width:${percent}%;height:6px;border-radius:8px;"></div></div></div>`;
+        }
+        scoreHTML += `</div>`;
+        
+        const actInsightMain = `
+            <div class="act-insight">
+                <strong>🧩 你的主导模式：${mainInfo.name} (得分 ${primaryScore}/60)</strong><br>
+                <strong>📌 心理策略描述：</strong> ${mainInfo.strategy}<br>
+                <strong>🌱 ACT成长路径：</strong> ${mainInfo.actPath}
+            </div>
+        `;
+        let secondInsight = '';
+        if(secondScore > 40) {
+            secondInsight = `<div class="act-insight" style="background:#f6efe5;">
+                <strong>🔁 次要倾向：${secondInfo.name} (得分 ${secondScore}/60)</strong><br>
+                <strong>📌 策略：</strong> ${secondInfo.strategy}<br>
+                <strong>✨ 觉察提醒：</strong> 留意何时切换到该模式，觉察它带来的好处与代价。
+            </div>`;
+        } else {
+            secondInsight = `<div style="margin:12px 0"><em>💡 您的次要策略影响较弱，主要参考主导模式进行内在工作。</em></div>`;
+        }
+        
+        // ACT总体总结
+        const generalACT = `
+            <hr>
+            <h3>✨ 接纳承诺疗法（ACT）视角 · 核心洞见</h3>
+            <p>九型人格描述的并不是一成不变的“性格”，而是您为了回避内心深处的“低价值感/不安全感”，所发展出的<strong>九种常见的心理僵化模式</strong>。无论您是哪种类型，本质上都是对内在痛苦经验的自动化应对策略。</p>
+            <p>📖 <strong>ACT的核心思路：</strong> 停止与模式搏斗，学会觉察模式、接纳情绪、与评价性想法解离，并根据自己看重的价值采取灵活行动。你不再被“我是几号”定义，而是可以<strong>选择</strong>回应生活的方式。</p>
+            <div style="background:#e2f0f5; border-radius:20px; padding:12px 20px; margin-top:15px;">
+            ✅ 邀请你练习：<br>
+            • 观察：“啊，我的‘成就模式’又启动了，它想让我努力来逃避恐惧。”<br>
+            • 解离：“我注意到头脑正在说‘我不够好’的故事。”<br>
+            • 连接价值：“在行动中，我最珍视的是什么？是成长？爱？还是平和？”<br>
+            • 承诺行动：哪怕是微小的一步，为价值而做，而非为回避而做。
+            </div>
+        `;
+        
+        const resultHtml = `
+            <div class="result-area">
+                <div class="type-badge">🔍 您的核心类型倾向：${mainInfo.name}</div>
+                ${scoreHTML}
+                ${actInsightMain}
+                ${secondInsight}
+                ${generalACT}
+                <div class="warning">
+                    ⚠️ 本测试结果基于自我报告，仅供参考与自我觉察。真正的成长在于有意识地观察并松动固定模式，建议结合专业ACT练习或心理支持。
+                </div>
+                <button id="restartBtn" style="background:#1e5a6e; margin-top:20px;">🔄 重新测试</button>
+            </div>
+        `;
+        const resultDiv = document.getElementById('resultArea');
+        resultDiv.innerHTML = resultHtml;
+        resultDiv.style.display = 'block';
+        document.getElementById('questionsArea').style.display = 'none';
+        document.querySelector('.nav-buttons').style.display = 'none';
+        document.getElementById('progressFill').parentElement.style.display = 'none';
+        document.getElementById('restartBtn').addEventListener('click', () => {
+            answers = new Array(108).fill(0);
+            currentPage = 0;
+            resultDiv.style.display = 'none';
+            document.getElementById('questionsArea').style.display = 'block';
+            document.querySelector('.nav-buttons').style.display = 'flex';
+            document.getElementById('progressFill').parentElement.style.display = 'block';
+            renderPage();
+            window.scrollTo({top:0});
+        });
+    }
+    
+    // 绑定全局按钮
+    document.getElementById('nextBtn').addEventListener('click', nextPage);
+    document.getElementById('prevBtn').addEventListener('click', prevPage);
+    document.getElementById('submitBtn').addEventListener('click', () => {
+        if(answers.filter(a=>a!==0).length === 108) {
+            showResults();
+        } else {
+            alert(`您还有${108 - answers.filter(a=>a!==0).length}道题未答，请完成所有题目以便获取完整解读。`);
+        }
+    });
+    
+    // 初始渲染
+    renderPage();
+</script>
+</body>
+</html>
