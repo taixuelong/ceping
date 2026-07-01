@@ -107,7 +107,7 @@
         function speak(text) { if (!window.speechSynthesis) return; window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang='zh-CN'; u.rate=0.95; u.pitch=1.02; u.volume=1; window.speechSynthesis.speak(u); }
         function goToScene(sceneId) { document.querySelectorAll('.scene').forEach(s => s.classList.remove('active')); document.getElementById(sceneId).classList.add('active'); }
         function startGuidedSession(type, onComplete) {
-            const sessions = { fiveSenses: { title: '3分钟 54321 五感练习', desc: '请看见五样你能看到的东西，感受四样你能触碰到的东西，听见三样声音，觉察两样气味，最后留意一种味道。', script: '现在开始三分钟 54321 五感练习。请看见五样你能看到的东西，感受四样你能触碰到的东西，听见三样声音，觉察两样气味，最后留意一种味道。', duration: 180 } };
+            const sessions = { fiveSenses: { title: '3分钟 54321 五感练习', desc: '请看见五样你能看到的东西，感受四样你能触碰到的东西，听见三样声音，觉察两样气味，最后留意一种味道。', script: '现在开始三分钟 5,4,3,2,1 五感练习。请看见五样你能看到的东西，感受四样你能触碰到的东西，听见三样声音，觉察两样气味，最后留意一种味道。', duration: 180 } };
             const session = sessions[type];
             const overlay = document.getElementById('guidedOverlay');
             const titleEl = document.getElementById('guidedTitle');
