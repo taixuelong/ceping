@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>第 4 天 · 情感无效化的代价</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { height: 100vh; overflow: hidden; background: radial-gradient(circle at top, #fffaf0, #f6e7d5 40%, #f2decc 100%); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; color: #5d4a3d; }
+        .page { position: relative; width: 100vw; height: 100vh; }
+        .scene { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; padding: 2rem 1.4rem; opacity: 0; visibility: hidden; transition: opacity 0.6s ease, visibility 0.6s ease; }
+        .scene.active { opacity: 1; visibility: visible; }
+        .container { width: min(100%, 360px); }
+        .pill { display: inline-flex; align-items: center; justify-content: center; padding: 0.6rem 1.05rem; background: rgba(255,247,235,0.52); border: 1px solid rgba(217,189,161,0.2); border-radius: 999px; font-size: 0.84rem; color: #8a6d57; margin-bottom: 1.2rem; }
+        .card { background: rgba(255,255,255,0.58); border: 1px solid rgba(255,255,255,0.4); border-radius: 24px; padding: 1.5rem; box-shadow: 0 18px 60px rgba(138,109,87,0.11); backdrop-filter: blur(14px); }
+        .title { font-weight: 700; font-size: 1.55rem; line-height: 1.3; margin-bottom: 0.4rem; color: #6c4d34; }
+        .subtitle { font-size: 0.92rem; line-height: 1.6; color: #8a6d57; margin-bottom: 1.2rem; }
+        .progress { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #b08d73; margin-bottom: 0.9rem; }
+        .step-text { font-size: 0.98rem; line-height: 1.7; color: #5d4a3d; margin-bottom: 1.2rem; }
+        .button { width: 100%; padding: 0.98rem 1.2rem; border: none; border-radius: 999px; background: linear-gradient(135deg, #8d6b4d, #a78267); color: #fff; font-size: 0.98rem; font-weight: 700; box-shadow: 0 10px 24px rgba(141,107,77,0.28); cursor: pointer; }
+        .button:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+        .options { display: grid; gap: 0.7rem; }
+        .option { padding: 0.9rem; border-radius: 14px; border: 1px solid #efe3d4; background: #fff8ef; font-size: 0.92rem; cursor: pointer; }
+        .option.selected { border-color: #8d6b4d; box-shadow: 0 0 0 4px rgba(141,107,77,0.08); }
+        .guided-overlay { position: fixed; inset: 0; background: rgba(68,47,32,0.58); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; visibility: hidden; transition: opacity 0.35s ease, visibility 0.35s ease; }
+        .guided-overlay.active { opacity: 1; visibility: visible; }
+        .guided-card { width: min(88vw,320px); background: linear-gradient(180deg,#fffaf4,#fff4e6); border-radius:24px; padding:1.4rem; box-shadow:0 24px 50px rgba(72,47,29,0.26); text-align:center; }
+        .guided-title { font-size:1.16rem; font-weight:700; color:#6d4a31; margin-bottom:0.4rem; }
+        .guided-desc { font-size:0.84rem; line-height:1.5; color:#8a6d57; margin-bottom:1rem; }
+        .guided-time { font-size:2.3rem; font-weight:800; letter-spacing:0.08em; color:#6d4a31; margin-bottom:1rem; }
+        .summary-card { padding: 1.3rem; border-radius: 20px; background: #fffdf9; border: 1px solid #f6ebde; }
+        .summary-block { margin-bottom: 1rem; padding: 0.9rem; background: #fff7ef; border-radius: 14px; }
+        .summary-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: #b08d73; margin-bottom: 0.4rem; }
+        .summary-content { font-size: 0.92rem; line-height: 1.6; color: #5d4a3d; }
+    </style>
+</head>
+<body>
+    <div id="guidedOverlay" class="guided-overlay" aria-hidden="true">
+        <div class="guided-card" role="dialog" aria-modal="true" aria-labelledby="guidedTitle">
+            <div id="guidedTitle" class="guided-title">3分钟身体扫描</div>
+            <div id="guidedDesc" class="guided-desc">请闭上眼，随着呼吸，感受身体从头到脚的变化。</div>
+            <div id="guidedTime" class="guided-time">03:00</div>
+            <button id="guidedContinueBtn" class="button" disabled>请完成 3 分钟</button>
+        </div>
+    </div>
+
+    <main class="page">
+        <section id="scene-0" class="scene active">
+            <div class="container">
+                <div class="pill">步骤 1 / 3 · 冥想开始</div>
+                <div class="card">
+                    <div class="title">先安顿自己，再进入练习</div>
+                    <div class="subtitle">点击下方按钮，先完成 3 分钟引导冥想，语音会自动播放。</div>
+                    <button class="button" onclick="startDayPractice()">开始 3 分钟冥想</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="scene-1" class="scene">
+            <div class="container">
+                <div class="pill">第 4 天 · 10分钟练习</div>
+                <div class="card">
+                    <div class="title">情感无效化的代价</div>
+                    <div class="subtitle">长期不被看见的感受，往往会藏在身体里。</div>
+                    <div class="step-text">请闭上眼，从头顶扫描到脚底。当你想到“不被看见”时，你的身体哪个部位有反应？</div>
+                    <div class="options">
+                        <div class="option" data-body="胸口" onclick="selectBody(this)">胸口</div>
+                        <div class="option" data-body="喉咙" onclick="selectBody(this)">喉咙</div>
+                        <div class="option" data-body="胃部" onclick="selectBody(this)">胃部</div>
+                        <div class="option" data-body="肩膀" onclick="selectBody(this)">肩膀</div>
+                    </div>
+                    <div style="margin-top:1rem;"><button class="button" onclick="startBodyScan()">为这个部位点一盏灯</button></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="scene-2" class="scene">
+            <div class="container">
+                <div class="pill">步骤 2 / 3 · 看见压抑的情绪</div>
+                <div class="card">
+                    <div class="progress">允许自己难受 10 分钟</div>
+                    <div class="step-text">这盏灯照亮了你为了维持关系而付出的代价。今天的小行动：允许自己难受 10 分钟，不要急着好起来，也不要试图去解决问题。只是陪着这个难受的部位。</div>
+                    <button class="button" onclick="startGuidedSession('bodyScan', () => goToScene('scene-3'))">开始 3 分钟身体扫描</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="scene-3" class="scene">
+            <div class="container">
+                <div class="pill">步骤 3 / 3 · 温柔复盘</div>
+                <div class="card summary-card">
+                    <div class="summary-title">你的专属心灵档案</div>
+                    <div class="summary-block">
+                        <div class="summary-label">身体在提醒你</div>
+                        <div id="bodyResult" class="summary-content">——</div>
+                    </div>
+                    <div class="summary-block">
+                        <div class="summary-label">今天的承诺</div>
+                        <div class="summary-content">我会更照顾我的身体，因为它一直在替我承受。</div>
+                    </div>                    <div class="summary-block">
+                        <div class="summary-label">总结模块</div>
+                        <div class="summary-content">你刚刚完成了：本页练习的关键步骤与自我确认。</div>
+                    </div>
+                    <button class="button" onclick="restartFlow()">完成今天的练习</button>
+
+
+
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        let selectedBody = '';
+        function speak(text) { if (!window.speechSynthesis) return; window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang='zh-CN'; u.rate=0.95; u.pitch=1.02; u.volume=1; window.speechSynthesis.speak(u); }
+        function selectBody(el){ document.querySelectorAll('.option').forEach(o=>o.classList.remove('selected')); el.classList.add('selected'); selectedBody = el.dataset.body; }
+        function startDayPractice(){ startGuidedSession('bodyScan',()=>goToScene('scene-1')); }
+        function startBodyScan(){ if(!selectedBody){ selectedBody='全身'; } document.getElementById('bodyResult').textContent = selectedBody; speak('身体扫描开始，请留意你最敏感的部位，允许自己感受到它的存在。'); startGuidedSession('bodyScan',()=>goToScene('scene-2')); }
+        function startGuidedSession(type, onComplete){ const sessions={bodyScan:{title:'3分钟身体扫描', desc:'请把注意力放在呼吸上，然后从头顶到脚底做一次身体扫描：觉察头面部、颈肩、胸腹、手臂与双腿的紧绷与放松，允许感受自然流动。', script:'现在开始三分钟身体扫描。先把注意力放在呼吸上，轻轻吸气，再慢慢呼气。接着把觉察放在头顶与额头，放松眼周和下颌；再移动到颈部和肩膀，允许紧绷慢慢松开；继续觉察胸口和腹部的起伏；最后来到手臂、双腿和脚底。每一次呼气，都在心里对自己说：我正在这里，我是安全的。', duration:180}}; const session=sessions[type]; const overlay=document.getElementById('guidedOverlay'); const titleEl=document.getElementById('guidedTitle'); const descEl=document.getElementById('guidedDesc'); const timeEl=document.getElementById('guidedTime'); const continueBtn=document.getElementById('guidedContinueBtn'); titleEl.textContent=session.title; descEl.textContent=session.desc; overlay.classList.add('active'); continueBtn.disabled=true; timeEl.textContent='03:00'; speak(session.script); let remaining=session.duration; const timer=setInterval(()=>{ remaining-=1; const mins=String(Math.floor(remaining/60)).padStart(2,'0'); const secs=String(remaining%60).padStart(2,'0'); timeEl.textContent=`${mins}:${secs}`; if(remaining<=0){ clearInterval(timer); overlay.classList.remove('active'); speak('身体扫描已完成。请带着更稳定的身体感受，进入下一步。'); if(typeof onComplete==='function') onComplete(); } },1000); }
+        function goToScene(sceneId){ document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active')); document.getElementById(sceneId).classList.add('active'); }
+        function restartFlow() {
+            const dayMatch = document.title.match(/第\s*(\d+)\s*天/);
+            if (dayMatch) {
+                localStorage.setItem('act21_day_' + dayMatch[1], 'done');
+                localStorage.setItem('act21_lastCompletedAt', new Date().toISOString());
+            } selectedBody=''; document.querySelectorAll('.option').forEach(o=>o.classList.remove('selected')); document.getElementById('bodyResult').textContent='——'; goToScene('scene-0'); }
+    </script>
+</body>
+</html>

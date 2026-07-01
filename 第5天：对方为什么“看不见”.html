@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>第 5 天 · 对方为什么“看不见”</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { height: 100vh; overflow: hidden; background: radial-gradient(circle at top, #fffaf0, #f6e7d5 40%, #f2decc 100%); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; color: #5d4a3d; }
+        .page { position: relative; width: 100vw; height: 100vh; }
+        .scene { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; padding: 2rem 1.4rem; opacity: 0; visibility: hidden; transition: opacity 0.6s ease, visibility 0.6s ease; }
+        .scene.active { opacity: 1; visibility: visible; }
+        .container { width: min(100%, 360px); }
+        .pill { display: inline-flex; align-items: center; justify-content: center; padding: 0.6rem 1.05rem; background: rgba(255,247,235,0.52); border: 1px solid rgba(217,189,161,0.2); border-radius: 999px; font-size: 0.84rem; color: #8a6d57; margin-bottom: 1.2rem; }
+        .card { background: rgba(255,255,255,0.58); border: 1px solid rgba(255,255,255,0.4); border-radius: 24px; padding: 1.5rem; box-shadow: 0 18px 60px rgba(138,109,87,0.11); backdrop-filter: blur(14px); }
+        .title { font-weight: 700; font-size: 1.55rem; line-height: 1.3; margin-bottom: 0.4rem; color: #6c4d34; }
+        .subtitle { font-size: 0.92rem; line-height: 1.6; color: #8a6d57; margin-bottom: 1.2rem; }
+        .progress { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #b08d73; margin-bottom: 0.9rem; }
+        .step-text { font-size: 0.98rem; line-height: 1.7; color: #5d4a3d; margin-bottom: 1.2rem; }
+        .button { width: 100%; padding: 0.98rem 1.2rem; border: none; border-radius: 999px; background: linear-gradient(135deg, #8d6b4d, #a78267); color: #fff; font-size: 0.98rem; font-weight: 700; box-shadow: 0 10px 24px rgba(141,107,77,0.28); cursor: pointer; }
+        .textarea { width: 100%; min-height: 140px; padding: 0.9rem; border-radius: 14px; border: 1px solid #ebddcd; background: #fffdfa; font-size: 0.92rem; color: #5d4a3d; resize: none; outline: none; }
+        .textarea:focus { border-color: #c9a687; }
+        .capsule { width: 120px; height: 120px; border-radius: 48% 52% 46% 54%; background: linear-gradient(135deg,#fff8ef,#d8c6b8); margin: 0 auto 1rem; border: 1px solid #f1e3d7; box-shadow: 0 16px 30px rgba(141,107,77,0.2); display: flex; align-items:center; justify-content:center; font-size:3rem; }
+        .summary-card { padding: 1.3rem; border-radius: 20px; background: #fffdf9; border: 1px solid #f6ebde; }
+        .summary-block { margin-bottom: 1rem; padding: 0.9rem; background: #fff7ef; border-radius: 14px; }
+        .summary-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: #b08d73; margin-bottom: 0.4rem; }
+        .summary-content { font-size: 0.92rem; line-height: 1.6; color: #5d4a3d; }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <section id="scene-0" class="scene active">
+            <div class="container">
+                <div class="pill">步骤 1 / 3 · 冥想开始</div>
+                <div class="card">
+                    <div class="title">先安顿自己，再进入练习</div>
+                    <div class="subtitle">点击下方按钮，先完成 3 分钟引导冥想，语音会自动播放。</div>
+                    <button class="button" onclick="startDayPractice()">开始 3 分钟冥想</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="scene-1" class="scene">
+            <div class="container">
+                <div class="pill">第 5 天 · 10分钟练习</div>
+                <div class="card">
+                    <div class="title">对方为什么“看不见”</div>
+                    <div class="subtitle">我们总以为只要表达得够清楚，对方就能懂。今天我们要打破这个幻想。</div>
+                    <div class="step-text">在这封不寄出的信里，不需要讲道理，不需要温柔，只讲你的失望。告诉他/她：因为看不见你的感受，你失去了什么。</div>
+                    <textarea id="letterInput" class="textarea" placeholder="亲爱的……因为你的忽视，我失去了……"></textarea>
+                    <div style="margin-top:1rem;"><button class="button" onclick="saveLetter()">把它存入“时光胶囊”</button></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="scene-2" class="scene">
+            <div class="container">
+                <div class="pill">步骤 2 / 3 · 宣布主权</div>
+                <div class="card">
+                    <div class="progress">请大声宣告</div>
+                    <div class="step-text">“我不再为他/她的大脑限制负责。”</div>
+                    <div class="capsule" onclick="speakDeclaration()" title="点击播放宣言">🧴</div>
+                    <button class="button" onclick="goToScene('scene-3')">继续</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="scene-3" class="scene">
+            <div class="container">
+                <div class="pill">步骤 3 / 3 · 温柔复盘</div>
+                <div class="card summary-card">
+                    <div class="summary-title">你的专属心灵档案</div>
+                    <div class="summary-block">
+                        <div class="summary-label">你不需要再背负的是</div>
+                        <div id="summaryResponsibility" class="summary-content">对他/她“不懂我”的责任感</div>
+                    </div>
+                    <div class="summary-block">
+                        <div class="summary-label">你明白了</div>
+                        <div class="summary-content">看不见，是他的缺失，不是我的不存在。</div>
+                    </div>                    <div class="summary-block">
+                        <div class="summary-label">总结模块</div>
+                        <div class="summary-content">你刚刚完成了：本页练习的关键步骤与自我确认。</div>
+                    </div>
+                    <button class="button" onclick="restartFlow()">完成今天的练习</button>
+
+
+
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function speak(text) { if (!window.speechSynthesis) return; window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang='zh-CN'; u.rate=0.95; u.pitch=1.02; u.volume=1; window.speechSynthesis.speak(u); }
+        
+        let entryMeditationDone = false;
+        function runEntryMeditation(onDone) {
+            if (entryMeditationDone) {
+                if (typeof onDone === 'function') onDone();
+                return;
+            }
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.inset = '0';
+            overlay.style.zIndex = '99999';
+            overlay.style.background = 'rgba(68,47,32,0.6)';
+            overlay.style.display = 'flex';
+            overlay.style.alignItems = 'center';
+            overlay.style.justifyContent = 'center';
+            overlay.style.padding = '20px';
+
+            const card = document.createElement('div');
+            card.style.width = 'min(88vw, 340px)';
+            card.style.background = 'linear-gradient(180deg, #fffaf4, #fff4e6)';
+            card.style.borderRadius = '24px';
+            card.style.padding = '18px';
+            card.style.textAlign = 'center';
+            card.style.boxShadow = '0 24px 50px rgba(72,47,29,0.26)';
+
+            const title = document.createElement('div');
+            title.textContent = '3 分钟引导冥想';
+            title.style.fontSize = '20px';
+            title.style.fontWeight = '700';
+            title.style.color = '#6d4a31';
+            title.style.marginBottom = '8px';
+
+            const desc = document.createElement('div');
+            desc.textContent = '请把注意力放在呼吸上，然后从头顶到脚底做一次身体扫描：觉察头面部、颈肩、胸腹、手臂与双腿的紧绷与放松，允许感受自然流动。';
+            desc.style.fontSize = '13px';
+            desc.style.lineHeight = '1.6';
+            desc.style.color = '#8a6d57';
+            desc.style.marginBottom = '14px';
+
+            const timeEl = document.createElement('div');
+            timeEl.textContent = '03:00';
+            timeEl.style.fontSize = '36px';
+            timeEl.style.fontWeight = '800';
+            timeEl.style.letterSpacing = '0.08em';
+            timeEl.style.color = '#6d4a31';
+
+            card.appendChild(title);
+            card.appendChild(desc);
+            card.appendChild(timeEl);
+            overlay.appendChild(card);
+            document.body.appendChild(overlay);
+
+            if (typeof speak === 'function') {
+                speak('现在开始三分钟身体扫描。先把注意力放在呼吸上，轻轻吸气，再慢慢呼气。接着把觉察放在头顶与额头，放松眼周和下颌；再移动到颈部和肩膀，允许紧绷慢慢松开；继续觉察胸口和腹部的起伏；最后来到手臂、双腿和脚底。每一次呼气，都在心里对自己说：我正在这里，我是安全的。');
+            }
+
+            let remaining = 180;
+            const timer = setInterval(function () {
+                remaining -= 1;
+                const mins = String(Math.floor(remaining / 60)).padStart(2, '0');
+                const secs = String(remaining % 60).padStart(2, '0');
+                timeEl.textContent = mins + ':' + secs;
+                if (remaining <= 0) {
+                    clearInterval(timer);
+                    entryMeditationDone = true;
+                    overlay.remove();
+                    if (typeof speak === 'function') {
+                        speak('身体扫描已完成。请带着更稳定的身体感受，开始今天的练习。');
+                    }
+                    if (typeof onDone === 'function') onDone();
+                }
+            }, 1000);
+        }
+function startDayPractice(){ runEntryMeditation(function () { goToScene('scene-1'); }); }
+    function saveLetter(){ const value=document.getElementById('letterInput').value.trim(); document.getElementById('summaryResponsibility').textContent = value || '对他/她“不懂我”的责任感'; speak('信已经存入时光胶囊。'); goToScene('scene-2'); }
+        function speakDeclaration(){ speak('我不再为他/她的大脑限制负责。'); }
+        function restartFlow() {
+            const dayMatch = document.title.match(/第\s*(\d+)\s*天/);
+            if (dayMatch) {
+                localStorage.setItem('act21_day_' + dayMatch[1], 'done');
+                localStorage.setItem('act21_lastCompletedAt', new Date().toISOString());
+            } document.getElementById('letterInput').value=''; document.getElementById('summaryResponsibility').textContent='对他/她“不懂我”的责任感'; goToScene('scene-0'); }
+
+    </script>
+</body>
+</html>

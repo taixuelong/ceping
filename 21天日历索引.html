@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>21天课程日历</title>
+  <style>
+    :root {
+      --bg1: #fffaf2;
+      --bg2: #f2e4d2;
+      --card: rgba(255, 255, 255, 0.86);
+      --text: #5a4335;
+      --muted: #8d7360;
+      --line: rgba(155, 122, 96, 0.22);
+      --accent: #9b6f4b;
+      --accent-soft: #e8d2bd;
+      --done: #2f8f5b;
+      --done-bg: #e7f7ef;
+      --shadow: 0 14px 30px rgba(98, 73, 54, 0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+      background: radial-gradient(circle at top, var(--bg1), var(--bg2) 52%, #ead6c1 100%);
+      color: var(--text);
+      padding: 20px 14px 28px;
+    }
+
+    .wrap {
+      width: min(100%, 430px);
+      margin: 0 auto;
+    }
+
+    .hero {
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: #7d5c46;
+      background: #fff3e6;
+      border: 1px solid #f0dac3;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 24px;
+      line-height: 1.3;
+      margin-bottom: 8px;
+      color: #5d4334;
+    }
+
+    .desc {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .stats {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .stat {
+      background: #fffaf5;
+      border: 1px solid #f1dfcd;
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: #6e4f3b;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn.reset {
+      background: #fff0ec;
+      color: #9a4f3f;
+      border: 1px solid #f0ccc4;
+    }
+
+    .btn.today {
+      background: linear-gradient(135deg, #9b6f4b, #b68862);
+      color: #fff;
+    }
+
+    .week {
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .week-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #6a4b37;
+      margin-bottom: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 7px;
+    }
+
+    .day {
+      text-decoration: none;
+      color: inherit;
+      background: #fff9f2;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      min-height: 76px;
+      padding: 7px 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: transform .15s ease;
+    }
+
+    .day:active { transform: scale(0.97); }
+
+    .day-num {
+      font-size: 12px;
+      color: #7e624f;
+      font-weight: 600;
+    }
+
+    .day-name {
+      font-size: 11px;
+      color: #5f4838;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      overflow: hidden;
+    }
+
+    .state {
+      align-self: flex-end;
+      font-size: 10px;
+      border-radius: 999px;
+      padding: 2px 6px;
+      background: #f4e7d9;
+      color: #86664f;
+    }
+
+    .day.done {
+      background: var(--done-bg);
+      border-color: #a9dfc3;
+    }
+
+    .day.done .state {
+      background: #c9f0da;
+      color: var(--done);
+      font-weight: 700;
+    }
+
+    .day.today {
+      outline: 2px solid var(--accent-soft);
+      border-color: #be906d;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="badge">21天课程日历索引</div>
+      <h1>每天一点点，慢慢把自己找回来</h1>
+      <div class="desc">点击当天卡片进入练习。每次在课程页面点击“完成今天的练习”后，会自动在这里标记为已完成。</div>
+      <div class="stats">
+        <div class="stat">
+          <div id="doneCount" class="stat-value">0</div>
+          <div class="stat-label">已完成</div>
+        </div>
+        <div class="stat">
+          <div id="leftCount" class="stat-value">21</div>
+          <div class="stat-label">待完成</div>
+        </div>
+        <div class="stat">
+          <div id="rate" class="stat-value">0%</div>
+          <div class="stat-label">完成率</div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn reset" onclick="resetProgress()">重置打卡</button>
+        <button class="btn today" onclick="goToday()">去今日建议</button>
+      </div>
+    </section>
+
+    <section class="week">
+      <div class="week-title">第 1 周 · 奠基与确认（身体扫描）</div>
+      <div id="week1" class="grid"></div>
+    </section>
+
+    <section class="week">
+      <div class="week-title">第 2 周 · 内在重建（步行冥想）</div>
+      <div id="week2" class="grid"></div>
+    </section>
+
+    <section class="week">
+      <div class="week-title">第 3 周 · 行动整合（54321 五感）</div>
+      <div id="week3" class="grid"></div>
+    </section>
+
+    <div class="footer-note">提示：如果你改了文件名，请同步修改本页脚本里的 `lessons` 列表。</div>
+  </div>
+
+  <script>
+    const lessons = [
+      { day: 1, name: '停下来，看见感受', file: '第1天：练习-停下来，看见自己的感受.html', week: 1 },
+      { day: 2, name: '卡桑德拉式无效化', file: '第2天：什么是卡桑德拉式无效化.html', week: 1 },
+      { day: 3, name: '停止自我责备', file: '第3天：停止自我责备.html', week: 1 },
+      { day: 4, name: '情感无效化代价', file: '第4天：情感无效化的代价.html', week: 1 },
+      { day: 5, name: '对方为什么看不见', file: '第5天：对方为什么“看不见”.html', week: 1 },
+      { day: 6, name: '我的情绪有价值', file: '第6天：我的情绪有价值.html', week: 1 },
+      { day: 7, name: '阶段复盘 + 第一道光', file: '第7天：阶段复盘 + 第一道光.html', week: 1 },
+
+      { day: 8, name: '给内在小孩写信', file: '第8天：给内在小孩写信.html', week: 2 },
+      { day: 9, name: '自我宣言强化（一）', file: '第9天：自我宣言强化周（一）.html', week: 2 },
+      { day: 10, name: '自我宣言强化（二）', file: '第10天：自我宣言强化周（二）.html', week: 2 },
+      { day: 11, name: '自我宣言强化（三）', file: '第11天：自我宣言强化周（三）.html', week: 2 },
+      { day: 12, name: '情绪命名与接纳', file: '第12天：情绪命名与接纳.html', week: 2 },
+      { day: 13, name: '自我价值独立', file: '第13天：自我价值独立.html', week: 2 },
+      { day: 14, name: '中期大复盘', file: '第14天：中期大复盘.html', week: 2 },
+
+      { day: 15, name: '设定情感边界', file: '第15天：设定情感边界.html', week: 3 },
+      { day: 16, name: '带着情绪行动', file: '第16天：带着情绪行动.html', week: 3 },
+      { day: 17, name: '外部支持网络', file: '第17天：外部支持网络.html', week: 3 },
+      { day: 18, name: '沟通尝试 vs 自我保护', file: '第18天：沟通尝试 vs 自我保护.html', week: 3 },
+      { day: 19, name: '情感自我供养日常', file: '第19天：情感自我供养日常.html', week: 3 },
+      { day: 20, name: '允许自己需要帮助', file: '第20天：允许自己需要帮助.html', week: 3 },
+      { day: 21, name: '复盘与未来承诺', file: '第21天：复盘与未来的承诺.html', week: 3 }
+    ];
+
+    function isDone(day) {
+      return localStorage.getItem(`act21_day_${day}`) === 'done';
+    }
+
+    function renderWeek(week, targetId) {
+      const container = document.getElementById(targetId);
+      container.innerHTML = '';
+      lessons.filter(item => item.week === week).forEach(item => {
+        const a = document.createElement('a');
+        a.href = '#';
+        a.className = 'day';
+        a.dataset.day = item.day;
+        a.dataset.file = item.file;
+        a.addEventListener('click', function (event) {
+          event.preventDefault();
+          openLesson(item.file);
+        });
+        if (isDone(item.day)) a.classList.add('done');
+        a.innerHTML = `
+          <div class="day-num">Day ${item.day}</div>
+          <div class="day-name">${item.name}</div>
+          <div class="state">${isDone(item.day) ? '已完成' : '未完成'}</div>
+        `;
+        container.appendChild(a);
+      });
+    }
+
+    function renderStats() {
+      const done = lessons.filter(item => isDone(item.day)).length;
+      const left = lessons.length - done;
+      const rate = Math.round((done / lessons.length) * 100);
+      document.getElementById('doneCount').textContent = done;
+      document.getElementById('leftCount').textContent = left;
+      document.getElementById('rate').textContent = `${rate}%`;
+    }
+
+    function markSuggestedDay() {
+      const firstNotDone = lessons.find(item => !isDone(item.day));
+      const day = firstNotDone ? firstNotDone.day : 21;
+      const card = document.querySelector(`.day[data-day="${day}"]`);
+      if (card) card.classList.add('today');
+    }
+
+    function goToday() {
+      const firstNotDone = lessons.find(item => !isDone(item.day));
+      const target = firstNotDone || lessons[lessons.length - 1];
+      openLesson(target.file);
+    }
+
+    function openLesson(fileName) {
+      // Use encoded relative paths to avoid local file:// issues with Chinese punctuation and spaces.
+      const safePath = encodeURI(fileName);
+      window.location.href = safePath;
+    }
+
+    function resetProgress() {
+      if (!confirm('确定要清空 21 天打卡记录吗？')) return;
+      for (let i = 1; i <= 21; i++) {
+        localStorage.removeItem(`act21_day_${i}`);
+      }
+      localStorage.removeItem('act21_lastCompletedAt');
+      init();
+    }
+
+    function init() {
+      renderWeek(1, 'week1');
+      renderWeek(2, 'week2');
+      renderWeek(3, 'week3');
+      renderStats();
+      markSuggestedDay();
+    }
+
+    init();
+  </script>
+</body>
+</html>

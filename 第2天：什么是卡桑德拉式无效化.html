@@ -1,0 +1,242 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>第 2 天 · 什么是卡桑德拉式无效化</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { height: 100vh; overflow: hidden; background: radial-gradient(circle at top, #fffaf0, #f6e7d5 40%, #f2decc 100%); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; color: #5d4a3d; }
+        .page { position: relative; width: 100vw; height: 100vh; }
+        .scene { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; padding: 2rem 1.4rem; opacity: 0; visibility: hidden; transition: opacity 0.6s ease, visibility 0.6s ease; }
+        .scene.active { opacity: 1; visibility: visible; }
+        .container { width: min(100%, 360px); }
+        .pill { display: inline-flex; align-items: center; justify-content: center; padding: 0.6rem 1.05rem; background: rgba(255,247,235,0.52); border: 1px solid rgba(217,189,161,0.2); border-radius: 999px; font-size: 0.84rem; color: #8a6d57; margin-bottom: 1.2rem; }
+        .card { background: rgba(255,255,255,0.58); border: 1px solid rgba(255,255,255,0.4); border-radius: 24px; padding: 1.5rem; box-shadow: 0 18px 60px rgba(138,109,87,0.11); backdrop-filter: blur(14px); }
+        .title { font-weight: 700; font-size: 1.55rem; line-height: 1.3; margin-bottom: 0.4rem; color: #6c4d34; }
+        .subtitle { font-size: 0.92rem; line-height: 1.6; color: #8a6d57; margin-bottom: 1.2rem; }
+        .progress { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #b08d73; margin-bottom: 0.9rem; }
+        .step-text { font-size: 0.98rem; line-height: 1.7; color: #5d4a3d; margin-bottom: 1.2rem; }
+        .button { width: 100%; padding: 0.98rem 1.2rem; border: none; border-radius: 999px; background: linear-gradient(135deg, #8d6b4d, #a78267); color: #fff; font-size: 0.98rem; font-weight: 700; box-shadow: 0 10px 24px rgba(141,107,77,0.28); cursor: pointer; }
+        .button.secondary { background: transparent; color: #8d6b4d; border: 1.5px solid #8d6b4d; box-shadow: none; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+        .input { width: 100%; min-height: 110px; padding: 0.9rem; border-radius: 14px; border: 1px solid #ebddcd; background: #fffdfa; font-size: 0.9rem; color: #5d4a3d; resize: none; outline: none; }
+        .input:focus { border-color: #c9a687; }
+        .comparison-card { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1rem; }
+        .comparison-panel { background: #fff9f2; border: 1px solid #f2e0d0; border-radius: 16px; padding: 1rem; }
+        .comparison-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: #b08d73; margin-bottom: 0.4rem; }
+        .comparison-content { font-size: 0.92rem; line-height: 1.6; color: #5d4a3d; }
+        .summary-card { padding: 1.3rem; border-radius: 20px; background: #fffdf9; border: 1px solid #f6ebde; }
+        .summary-block { margin-bottom: 1rem; padding: 0.9rem; background: #fff7ef; border-radius: 14px; }
+        .summary-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: #b08d73; margin-bottom: 0.4rem; }
+        .summary-content { font-size: 0.92rem; line-height: 1.6; color: #5d4a3d; }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <section id="scene-0" class="scene active">
+            <div class="container">
+                <div class="pill">步骤 1 / 4 · 冥想开始</div>
+                <div class="card">
+                    <div class="title">先安顿自己，再进入练习</div>
+                    <div class="subtitle">点击下方按钮，先完成 3 分钟引导冥想，语音会自动播放。</div>
+                    <button class="button" onclick="startDayPractice()">开始 3 分钟冥想</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="scene-1" class="scene">
+            <div class="container">
+                <div class="pill">第 2 天 · 10分钟练习</div>
+                <div class="card">
+                    <div class="title">什么是卡桑德拉式无效化</div>
+                    <div class="subtitle">我们要解决的不是“你做错了什么”，而是“为什么你们的系统不兼容”。</div>
+                    <div class="step-text">想象你是一台高灵敏度的收音机，而对方是一台只能接收数字代码的计算器。不是你的收音机坏了，也不是他的计算器坏了，只是操作系统不同。</div>
+                    <button class="button" onclick="goToScene('scene-2')">继续探索</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="scene-2" class="scene">
+            <div class="container">
+                <div class="pill">步骤 2 / 4 · 诚实面对</div>
+                <div class="card">
+                    <div class="progress">你渴望什么？他/她实际给出什么？</div>
+                    <div class="grid-2" style="margin-bottom: 0.9rem;">
+                        <div>
+                            <div class="summary-label" style="margin-bottom:0.45rem;">我渴望他/她……</div>
+                            <textarea id="desireInput" class="input" placeholder="例如：倾听我、理解我、陪我说完……"></textarea>
+                        </div>
+                        <div>
+                            <div class="summary-label" style="margin-bottom:0.45rem;">但他/她总是……</div>
+                            <textarea id="responseInput" class="input" placeholder="例如：回避、否定、打断、冷处理……"></textarea>
+                        </div>
+                    </div>
+                    <button class="button" onclick="generateComparison()">生成对比卡</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="scene-3" class="scene">
+            <div class="container">
+                <div class="pill">步骤 3 / 4 · 生成对比卡</div>
+                <div class="card">
+                    <div class="comparison-card">
+                        <div class="comparison-panel">
+                            <div class="comparison-label">渴望</div>
+                            <div id="comparisonLeft" class="comparison-content">——</div>
+                        </div>
+                        <div class="comparison-panel">
+                            <div class="comparison-label">现实</div>
+                            <div id="comparisonRight" class="comparison-content">——</div>
+                        </div>
+                    </div>
+                    <div class="step-text" style="margin-bottom:1rem;">这不是你的错。你渴望水，但他只能给你石头。这让你感到干渴，但这不代表你不该喝水。</div>
+                    <button class="button" onclick="goToScene('scene-4')">继续</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="scene-4" class="scene">
+            <div class="container">
+                <div class="pill">步骤 4 / 4 · 温柔复盘</div>
+                <div class="card summary-card">
+                    <div class="summary-title">你的专属心灵档案</div>
+                    <div class="summary-block">
+                        <div class="summary-label">你的情感需求是</div>
+                        <div id="summaryNeed" class="summary-content">——</div>
+                    </div>
+                    <div class="summary-block">
+                        <div class="summary-label">系统的真相是</div>
+                        <div class="summary-content">他/她的操作系统里，可能真的缺少“共情模块”。</div>
+                    </div>                    <div class="summary-block">
+                        <div class="summary-label">总结模块</div>
+                        <div class="summary-content">你刚刚完成了：本页练习的关键步骤与自我确认。</div>
+                    </div>
+                    <button class="button" onclick="restartFlow()">完成今天的练习</button>
+
+
+
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function speak(text) {
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'zh-CN';
+            utterance.rate = 0.94; utterance.pitch = 1.02; utterance.volume = 1;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        
+        let entryMeditationDone = false;
+        function runEntryMeditation(onDone) {
+            if (entryMeditationDone) {
+                if (typeof onDone === 'function') onDone();
+                return;
+            }
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.inset = '0';
+            overlay.style.zIndex = '99999';
+            overlay.style.background = 'rgba(68,47,32,0.6)';
+            overlay.style.display = 'flex';
+            overlay.style.alignItems = 'center';
+            overlay.style.justifyContent = 'center';
+            overlay.style.padding = '20px';
+
+            const card = document.createElement('div');
+            card.style.width = 'min(88vw, 340px)';
+            card.style.background = 'linear-gradient(180deg, #fffaf4, #fff4e6)';
+            card.style.borderRadius = '24px';
+            card.style.padding = '18px';
+            card.style.textAlign = 'center';
+            card.style.boxShadow = '0 24px 50px rgba(72,47,29,0.26)';
+
+            const title = document.createElement('div');
+            title.textContent = '3 分钟引导冥想';
+            title.style.fontSize = '20px';
+            title.style.fontWeight = '700';
+            title.style.color = '#6d4a31';
+            title.style.marginBottom = '8px';
+
+            const desc = document.createElement('div');
+            desc.textContent = '请先把双脚踏稳地面，感受椅面或脚底的支撑；再从头顶到脚底做一次身体扫描，记录当下最真实的身体信号。';
+            desc.style.fontSize = '13px';
+            desc.style.lineHeight = '1.6';
+            desc.style.color = '#8a6d57';
+            desc.style.marginBottom = '14px';
+
+            const timeEl = document.createElement('div');
+            timeEl.textContent = '03:00';
+            timeEl.style.fontSize = '36px';
+            timeEl.style.fontWeight = '800';
+            timeEl.style.letterSpacing = '0.08em';
+            timeEl.style.color = '#6d4a31';
+
+            card.appendChild(title);
+            card.appendChild(desc);
+            card.appendChild(timeEl);
+            overlay.appendChild(card);
+            document.body.appendChild(overlay);
+
+            if (typeof speak === 'function') {
+                speak('现在开始三分钟落地式身体扫描。先把双脚稳稳放在地面，感受地板对你的支撑。吸气时感受胸腔打开，呼气时让肩膀下沉。接着依次觉察头顶、额头、眼周、下颌、颈部和肩膀；再来到胸口和腹部，看看这里是紧、酸、空、还是堵，不评判，只记录。最后觉察手臂、双腿和脚底的触地感。请在心里记住：我此刻感受到的，就是事实。');
+            }
+
+            let remaining = 180;
+            const timer = setInterval(function () {
+                remaining -= 1;
+                const mins = String(Math.floor(remaining / 60)).padStart(2, '0');
+                const secs = String(remaining % 60).padStart(2, '0');
+                timeEl.textContent = mins + ':' + secs;
+                if (remaining <= 0) {
+                    clearInterval(timer);
+                    entryMeditationDone = true;
+                    overlay.remove();
+                    if (typeof speak === 'function') {
+                        speak('身体扫描已完成。请带着更清晰、更落地的状态，进入事实与需求的区分。');
+                    }
+                    if (typeof onDone === 'function') onDone();
+                }
+            }, 1000);
+        }
+function startDayPractice() {
+            runEntryMeditation(function () {
+                speak('第 2 天，今天的重点是区分你的需求和对方的能力。请诚实写下你想要什么，以及他/她实际给你的回应。');
+                goToScene('scene-1');
+            });
+        }
+
+        function generateComparison() {
+            const desire = document.getElementById('desireInput').value.trim() || '被理解、被倾听、被陪伴';
+            const response = document.getElementById('responseInput').value.trim() || '回避、否定、打断、冷处理';
+            document.getElementById('comparisonLeft').textContent = desire;
+            document.getElementById('comparisonRight').textContent = response;
+            document.getElementById('summaryNeed').textContent = desire;
+            speak('对比卡已经生成。请看清楚，渴望的是你的需求，现实的是他的回应。');
+            goToScene('scene-3');
+        }
+
+        function restartFlow() {
+            const dayMatch = document.title.match(/第\s*(\d+)\s*天/);
+            if (dayMatch) {
+                localStorage.setItem('act21_day_' + dayMatch[1], 'done');
+                localStorage.setItem('act21_lastCompletedAt', new Date().toISOString());
+            }
+            document.getElementById('desireInput').value = '';
+            document.getElementById('responseInput').value = '';
+            document.getElementById('comparisonLeft').textContent = '——';
+            document.getElementById('comparisonRight').textContent = '——';
+            document.getElementById('summaryNeed').textContent = '——';
+            goToScene('scene-0');
+        }
+
+    </script>
+</body>
+</html>
